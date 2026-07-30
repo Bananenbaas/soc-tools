@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xl: 64rem;
+  --breakpoint-lg: 60rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-sm: 35rem;
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-text: var(--warning-text);
+  --color-error-bg: var(--error-bg);
+  --color-error-text: var(--error-text);
+}
+
+:root {
+  color-scheme: light;
+  --page: oklch(0.98 0.006 250);
+  --surface: oklch(1 0 0);
+  --surface-raised: oklch(0.955 0.012 250);
+  --text: oklch(0.22 0.025 255);
+  --text-muted: oklch(0.42 0.03 255);
+  --border: oklch(0.82 0.02 250);
+  --accent: oklch(0.43 0.15 255);
+  --accent-hover: oklch(0.36 0.15 255);
+  --accent-text: oklch(1 0 0);
+  --warning-bg: oklch(0.94 0.08 85);
+  --warning-text: oklch(0.32 0.07 65);
+  --error-bg: oklch(0.94 0.045 25);
+  --error-text: oklch(0.38 0.15 25);
+  --focus: oklch(0.58 0.19 255);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: oklch(0.17 0.025 255);
+  --surface: oklch(0.22 0.027 255);
+  --surface-raised: oklch(0.27 0.03 255);
+  --text: oklch(0.94 0.012 250);
+  --text-muted: oklch(0.76 0.025 250);
+  --border: oklch(0.42 0.035 250);
+  --accent: oklch(0.72 0.13 245);
+  --accent-hover: oklch(0.79 0.11 245);
+  --accent-text: oklch(0.16 0.025 255);
+  --warning-bg: oklch(0.3 0.06 70);
+  --warning-text: oklch(0.9 0.1 85);
+  --error-bg: oklch(0.3 0.08 25);
+  --error-text: oklch(0.88 0.08 25);
+  --focus: oklch(0.76 0.14 245);
+}
+
+:root[data-text-size="14"] { font-size: 0.875rem; }
+:root[data-text-size="15"] { font-size: 0.9375rem; }
+:root[data-text-size="16"] { font-size: 1rem; }
+:root[data-text-size="17"] { font-size: 1.0625rem; }
+:root[data-text-size="18"] { font-size: 1.125rem; }
+:root[data-text-size="19"] { font-size: 1.1875rem; }
+:root[data-text-size="20"] { font-size: 1.25rem; }
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { min-width: 20rem; background: var(--page); }
+  body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--page);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+  button, select, textarea { color: inherit; font: inherit; }
+  button, select, a { touch-action: manipulation; }
+  button:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
+    outline: 0.1875rem solid var(--focus);
+    outline-offset: 0.1875rem;
+  }
+  h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; letter-spacing: -0.03em; }
+}
+
+#app { display: flex; min-height: 100vh; flex-direction: column; }
+.shell { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+.skip-link { position: fixed; z-index: 50; left: 1rem; top: 0; min-height: 2.75rem; padding: 0.65rem 1rem; transform: translateY(-120%); background: var(--accent); color: var(--accent-text); }
+.skip-link:focus { transform: translateY(0.5rem); }
+.site-header { border-bottom: 1px solid var(--border); background: var(--surface); }
+.header-content { display: flex; min-height: 4.5rem; align-items: center; justify-content: space-between; gap: 1rem; }
+.brand { color: var(--text); font-size: 1.25rem; font-weight: 800; text-decoration: none; letter-spacing: -0.03em; }
+.controls { display: flex; align-items: center; gap: 0.5rem; }
+.icon-button, .text-controls button, .secondary-button, select {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+.icon-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; padding-inline: 0.75rem; color: var(--text); text-decoration: none; cursor: pointer; }
+.icon-button:hover, .text-controls button:hover, .secondary-button:hover, select:hover { background: var(--surface-raised); }
+svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.text-controls { display: flex; }
+.text-controls button { padding: 0 0.65rem; cursor: pointer; }
+.text-controls button + button { margin-left: -1px; }
+select { padding: 0 1.75rem 0 0.65rem; cursor: pointer; }
+.main-content { flex: 1; padding-block: clamp(2.5rem, 7vw, 5rem); }
+.site-footer { border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.875rem; }
+.site-footer .shell { padding-block: 1.5rem; }
+.hero { max-width: 46rem; }
+.hero p:last-child, .tool-heading p { color: var(--text-muted); font-size: 1.125rem; }
+.eyebrow, .category { color: var(--accent); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.tool-grid { display: grid; margin: 2.5rem 0 0; padding: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; list-style: none; }
+.tool-card { position: relative; display: flex; min-height: 12rem; padding: 1.5rem; flex-direction: column; gap: 0.6rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); color: var(--text); text-decoration: none; }
+.tool-card:hover { border-color: var(--accent); background: var(--surface-raised); }
+.tool-card strong { font-size: 1.25rem; }
+.tool-card > span:last-of-type { color: var(--text-muted); }
+.tool-card svg { position: absolute; right: 1.25rem; bottom: 1.25rem; }
+.tool-heading { max-width: 48rem; }
+.tool-heading .category { display: block; margin-bottom: 0.5rem; }
+.option-grid { display: grid; margin-top: 2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+fieldset { display: flex; min-width: 0; margin: 0; padding: 1rem; gap: 1.25rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); }
+legend { padding-inline: 0.35rem; font-weight: 700; }
+fieldset label { display: flex; min-height: 2.75rem; align-items: center; gap: 0.45rem; cursor: pointer; }
+input[type="radio"] { width: 1.25rem; height: 1.25rem; accent-color: var(--accent); }
+.notice { margin: 1rem 0 0; padding: 0.9rem 1rem; border-radius: 0.5rem; }
+.warning { background: var(--warning-bg); color: var(--warning-text); }
+.error { background: var(--error-bg); color: var(--error-text); }
+.editor-grid { display: grid; margin-top: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.field { min-width: 0; }
+.field-heading { display: flex; min-height: 3.25rem; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.field-heading label { font-weight: 700; }
+.secondary-button { font-size: 0.875rem; }
+.secondary-button:disabled { cursor: not-allowed; opacity: 0.55; }
+textarea { display: block; width: 100%; min-height: 20rem; resize: vertical; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 60rem) {
+  .github-link span { display: none; }
+}
+@media (max-width: 48rem) {
+  .header-content { padding-block: 0.75rem; align-items: flex-start; }
+  .controls { justify-content: flex-end; flex-wrap: wrap; }
+  .editor-grid { grid-template-columns: 1fr; }
+  textarea { min-height: 14rem; }
+}
+@media (max-width: 35rem) {
+  .shell { width: min(100% - 1rem, 72rem); }
+  .header-content { align-items: center; }
+  .brand { font-size: 1rem; }
+  .controls { gap: 0.25rem; }
+  .icon-button, .text-controls button, select { padding-inline: 0.5rem; }
+  .tool-grid, .option-grid { grid-template-columns: 1fr; }
+  fieldset { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skip-link, .tool-card, button { transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease; }
+}
