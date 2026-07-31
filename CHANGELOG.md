@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Strict production Content-Security-Policy (no `unsafe-eval`/`unsafe-inline`) and security headers, shipped as `public/_headers` and a matching nginx snippet.
 - GitHub Actions CI (typecheck, lint, tests, `npm audit`, build) with least-privilege permissions and commit-pinned actions, plus a Dependabot config.
 - A no-network test proving the tools make no network calls, and a Content-Security-Policy smoke test against the production build.
+- Docker self-hosting: a multi-stage image (nginx, non-root, healthcheck) that bakes in the security headers and SPA fallback, published to GHCR as a multi-architecture image (linux/amd64, arm64, arm/v7, arm/v6 — including older Raspberry Pi models), plus a `docker-compose.yml`.
+- An SPA deep-link fallback (`public/_redirects`) and a Deployment/Self-hosting guide in the README covering Cloudflare Pages, Netlify, Vercel, GitHub Pages, and Docker.
 
 ### Changed
 
