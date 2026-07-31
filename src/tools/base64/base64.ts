@@ -16,7 +16,7 @@ export function encodeBase64(value: string, variant: Base64Variant = 'base64'): 
     : encoded
 }
 
-export function decodeBase64(value: string, variant: Base64Variant = 'base64'): string {
+export function decodeBase64Bytes(value: string, variant: Base64Variant = 'base64'): Uint8Array {
   const compact = value.replace(/\s/gu, '')
   const alphabet = variant === 'base64url' ? /^[A-Za-z0-9_-]*={0,2}$/u : /^[A-Za-z0-9+/]*={0,2}$/u
   if (!alphabet.test(compact) || compact.length % 4 === 1) throw new Error('Invalid Base64')
@@ -30,7 +30,11 @@ export function decodeBase64(value: string, variant: Base64Variant = 'base64'): 
     throw new Error('Invalid Base64')
   }
 
-  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0))
+  return Uint8Array.from(binary, (character) => character.charCodeAt(0))
+}
+
+export function decodeBase64(value: string, variant: Base64Variant = 'base64'): string {
+  const bytes = decodeBase64Bytes(value, variant)
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes)
   } catch {

@@ -1,7 +1,6 @@
 export type HexDelimiter = 'none' | 'space' | '0x' | '\\x'
 
-export function encodeHex(value: string, uppercase = false, delimiter: HexDelimiter = 'none'): string {
-  const bytes = new TextEncoder().encode(value)
+export function formatHexBytes(bytes: Uint8Array, uppercase = false, delimiter: HexDelimiter = 'none'): string {
   const parts = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0'))
     .map((part) => uppercase ? part.toUpperCase() : part)
   const formatted = delimiter === 'space' ? parts.join(' ')
@@ -9,6 +8,10 @@ export function encodeHex(value: string, uppercase = false, delimiter: HexDelimi
       : delimiter === '\\x' ? parts.map((part) => `\\x${part}`).join('')
         : parts.join('')
   return formatted
+}
+
+export function encodeHex(value: string, uppercase = false, delimiter: HexDelimiter = 'none'): string {
+  return formatHexBytes(new TextEncoder().encode(value), uppercase, delimiter)
 }
 
 export function decodeHex(value: string): string {

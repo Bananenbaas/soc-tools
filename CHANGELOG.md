@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - IOC Extractor & Normalizer: extract, validate, deduplicate, and normalize indicators (IPv4/IPv6, domains, URLs, MD5/SHA-1/SHA-256, emails, CVEs, Windows paths and registry keys) from free text, with defang/refang, per-type grouping, source line numbers, and CSV/JSON export. Recognition is kept separate from validation, and nothing is labelled malicious.
+- PowerShell EncodedCommand Decoder: recognise `-e`/`-enc`/`-EncodedCommand`, decode the Base64 payload as UTF-16LE, and show the script alongside a hex/bytes view, printable strings, extracted indicators/cmdlets, and a best-effort de-obfuscation view. It decodes only — it never executes anything.
 
 ## [1.0.0] - 2026-07-31
 

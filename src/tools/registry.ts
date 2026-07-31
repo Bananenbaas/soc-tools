@@ -33,6 +33,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M12 3v4', 'm12 17v4', 'M3 12h4', 'm17 0h4', 'm5.6 5.6 2.8 2.8', 'm7.6 16.4-2.8 2.8', 'm16.4 16.4 2.8 2.8', 'm16.4 7.6 2.8-2.8'] },
   },
   {
+    id: 'soc-tools.psdecoder', nameKey: 'tools.psdecoder.name', descriptionKey: 'tools.psdecoder.description',
+    category: 'inspection', routePath: '/tools/powershell-decoder', component: () => import('./psdecoder/PsDecoderTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 5h16v14H4z', 'm7 9 3 3-3 3', 'M12 15h5'] },
+  },
+  {
     id: 'soc-tools.hash', nameKey: 'tools.hash.name', descriptionKey: 'tools.hash.description',
     category: 'hashing', routePath: '/tools/hash', component: () => import('./hash/HashTool.vue'),
     recommendedMaxInputBytes: 5_000_000,
