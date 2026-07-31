@@ -68,6 +68,12 @@ export const toolRegistry = [
     recommendedMaxInputBytes: 1_000_000,
     icon: { viewBox: '0 0 24 24', paths: ['M6 3h9l4 4v14H6z', 'M15 3v5h4', 'M9 12h7', 'M9 16h7'] },
   },
+  {
+    id: 'soc-tools.cmdline', nameKey: 'tools.cmdline.name', descriptionKey: 'tools.cmdline.description',
+    category: 'windows', routePath: '/tools/windows-cmdline', component: () => import('./cmdline/CmdLineTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 5h16v14H4z', 'm7 9 3 3-3 3', 'M12 15h5', 'M4 8h16'] },
+  },
 ] as const satisfies readonly ToolDefinition[]
 
 export function getTool(id: ToolDefinition['id']): ToolDefinition {
