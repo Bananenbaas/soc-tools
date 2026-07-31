@@ -29,7 +29,8 @@ const messages = {
       noResults: 'No tools match this filter.',
     },
     themes: { terminal: 'Terminal', slate: 'Slate', frost: 'Frost', contrast: 'High contrast' },
-    categories: { encoding: 'Encoding' },
+    categories: { encoding: 'Encoding', inspection: 'Inspection', hashing: 'Hashing', 'threat-intel': 'Threat intelligence', time: 'Time' },
+    common: { operation: 'Operation', encode: 'Encode', decode: 'Decode', input: 'Input', output: 'Output', result: 'The result appears here', clear: 'Clear input and output', copy: 'Copy output', copied: 'Copied', warning: 'This input is larger than the recommended limit of {size}. Your browser may respond slowly.' },
     tools: {
       base64: {
         name: 'Base64 encode/decode',
@@ -51,6 +52,12 @@ const messages = {
         inputPlaceholder: 'Enter text to transform',
         outputPlaceholder: 'The result appears here',
       },
+      hex: { name: 'Hex encode/decode', description: 'Convert UTF-8 text to hexadecimal bytes and back.', delimiter: 'Delimiter', none: 'None', space: 'Space', uppercase: 'Uppercase', invalid: 'Enter complete hexadecimal byte pairs using only 0–9 and A–F.', invalidUtf8: 'These bytes are not valid UTF-8 text.', placeholder: 'Enter UTF-8 text or hexadecimal bytes' },
+      url: { name: 'URL encode/decode', description: 'Encode or decode URL components and complete URLs.', mode: 'Mode', component: 'Component', full: 'Full URL', invalid: 'The input is not a valid URL or contains a malformed percent escape.', placeholder: 'Enter a URL component or complete URL' },
+      jwt: { name: 'JWT inspect', description: 'Decode and inspect JWT header, payload, and registered timestamps.', limitation: 'Inspection only: the signature is not verified. Do not treat this token as authentic.', invalid: 'Malformed JWT. Provide three non-empty Base64URL segments with JSON objects in the header and payload.', placeholder: 'Paste a JSON Web Token' },
+      hash: { name: 'Hash', description: 'Compute MD5 and SHA digests from UTF-8 text or hexadecimal bytes.', inputMode: 'Input', text: 'UTF-8 text', hex: 'Hex bytes', uppercase: 'Uppercase', limitation: 'MD5 and SHA-1 are for identification/compatibility only and are not cryptographically secure.', invalid: 'Hex input must contain complete byte pairs using only 0–9 and A–F.', placeholder: 'Enter text or hexadecimal bytes' },
+      defang: { name: 'Defang / refang', description: 'Make common indicators safer to share, or restore analyst notation.', defang: 'Defang', refang: 'Refang', limitation: 'Textual replacement only. Review the result before opening or executing anything.', placeholder: 'Enter URLs, domains, IP addresses, or email addresses' },
+      timestamp: { name: 'Timestamp converter', description: 'Convert Unix, Windows FILETIME, and human date-times.', inputType: 'Input format', seconds: 'Unix seconds', milliseconds: 'Unix milliseconds', filetime: 'Windows FILETIME', human: 'Human date-time', limitation: 'Human date-times without an explicit offset use the browser’s local time zone.', invalid: 'Invalid or out-of-range timestamp. Use an integer or a recognized date-time with an explicit time zone.', placeholder: 'Enter a timestamp or date-time' },
     },
   },
   nl: {
@@ -81,7 +88,8 @@ const messages = {
       noResults: 'Geen tools gevonden voor dit filter.',
     },
     themes: { terminal: 'Terminal', slate: 'Leisteen', frost: 'Vorst', contrast: 'Hoog contrast' },
-    categories: { encoding: 'Codering' },
+    categories: { encoding: 'Codering', inspection: 'Inspectie', hashing: 'Hashing', 'threat-intel': 'Dreigingsinformatie', time: 'Tijd' },
+    common: { operation: 'Bewerking', encode: 'Coderen', decode: 'Decoderen', input: 'Invoer', output: 'Uitvoer', result: 'Het resultaat verschijnt hier', clear: 'Wis invoer en uitvoer', copy: 'Kopieer uitvoer', copied: 'Gekopieerd', warning: 'Deze invoer is groter dan de aanbevolen limiet van {size}. Je browser kan traag reageren.' },
     tools: {
       base64: {
         name: 'Base64 coderen/decoderen',
@@ -103,6 +111,12 @@ const messages = {
         inputPlaceholder: 'Voer tekst in om te verwerken',
         outputPlaceholder: 'Het resultaat verschijnt hier',
       },
+      hex: { name: 'Hex coderen/decoderen', description: 'Zet UTF-8-tekst om naar hexadecimale bytes en terug.', delimiter: 'Scheiding', none: 'Geen', space: 'Spatie', uppercase: 'Hoofdletters', invalid: 'Voer volledige hexadecimale byteparen in met alleen 0–9 en A–F.', invalidUtf8: 'Deze bytes vormen geen geldige UTF-8-tekst.', placeholder: 'Voer UTF-8-tekst of hexadecimale bytes in' },
+      url: { name: 'URL coderen/decoderen', description: 'Codeer of decodeer URL-componenten en volledige URL’s.', mode: 'Modus', component: 'Component', full: 'Volledige URL', invalid: 'De invoer is geen geldige URL of bevat een ongeldige procentcode.', placeholder: 'Voer een URL-component of volledige URL in' },
+      jwt: { name: 'JWT inspecteren', description: 'Decodeer en inspecteer JWT-header, payload en geregistreerde tijdstempels.', limitation: 'Alleen inspectie: de handtekening wordt niet geverifieerd. Beschouw dit token niet als authentiek.', invalid: 'Ongeldige JWT. Geef drie niet-lege Base64URL-segmenten met JSON-objecten voor header en payload.', placeholder: 'Plak een JSON Web Token' },
+      hash: { name: 'Hash', description: 'Bereken MD5- en SHA-digests uit UTF-8-tekst of hexadecimale bytes.', inputMode: 'Invoer', text: 'UTF-8-tekst', hex: 'Hex-bytes', uppercase: 'Hoofdletters', limitation: 'MD5 en SHA-1 zijn alleen voor identificatie/compatibiliteit en zijn niet cryptografisch veilig.', invalid: 'Hex-invoer moet uit volledige byteparen met alleen 0–9 en A–F bestaan.', placeholder: 'Voer tekst of hexadecimale bytes in' },
+      defang: { name: 'Defang / refang', description: 'Maak veelvoorkomende indicatoren veiliger om te delen, of herstel de notatie.', defang: 'Defang', refang: 'Refang', limitation: 'Alleen tekstuele vervanging. Controleer het resultaat voordat je iets opent of uitvoert.', placeholder: 'Voer URL’s, domeinen, IP-adressen of e-mailadressen in' },
+      timestamp: { name: 'Tijdstempelconverter', description: 'Converteer Unix, Windows FILETIME en leesbare datum/tijd.', inputType: 'Invoerformaat', seconds: 'Unix-seconden', milliseconds: 'Unix-milliseconden', filetime: 'Windows FILETIME', human: 'Leesbare datum/tijd', limitation: 'Een datum/tijd zonder expliciete offset gebruikt de lokale tijdzone van de browser.', invalid: 'Ongeldige tijdstempel of buiten bereik. Gebruik een geheel getal of herkenbare datum/tijd met tijdzone.', placeholder: 'Voer een tijdstempel of datum/tijd in' },
     },
   },
 } as const

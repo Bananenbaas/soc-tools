@@ -14,6 +14,42 @@ export const toolRegistry = [
       paths: ['M8 4 3 12l5 8', 'm16 4 5 8-5 8', 'm14 3-4 18'],
     },
   },
+  {
+    id: 'soc-tools.hex', nameKey: 'tools.hex.name', descriptionKey: 'tools.hex.description',
+    category: 'encoding', routePath: '/tools/hex', component: () => import('./hex/HexTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M7 3 4 21', 'M17 3l-3 18', 'M3 9h18', 'M2 15h18'] },
+  },
+  {
+    id: 'soc-tools.url', nameKey: 'tools.url.name', descriptionKey: 'tools.url.description',
+    category: 'encoding', routePath: '/tools/url', component: () => import('./url/UrlTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1', 'M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1'] },
+  },
+  {
+    id: 'soc-tools.jwt', nameKey: 'tools.jwt.name', descriptionKey: 'tools.jwt.description',
+    category: 'inspection', routePath: '/tools/jwt', component: () => import('./jwt/JwtTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M12 3v4', 'm12 17v4', 'M3 12h4', 'm17 0h4', 'm5.6 5.6 2.8 2.8', 'm7.6 16.4-2.8 2.8', 'm16.4 16.4 2.8 2.8', 'm16.4 7.6 2.8-2.8'] },
+  },
+  {
+    id: 'soc-tools.hash', nameKey: 'tools.hash.name', descriptionKey: 'tools.hash.description',
+    category: 'hashing', routePath: '/tools/hash', component: () => import('./hash/HashTool.vue'),
+    recommendedMaxInputBytes: 5_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M7 3 4 21', 'M17 3l-3 18', 'M3 9h18', 'M2 15h18', 'm10 7 4 2-4 2z'] },
+  },
+  {
+    id: 'soc-tools.defang', nameKey: 'tools.defang.name', descriptionKey: 'tools.defang.description',
+    category: 'threat-intel', routePath: '/tools/defang', component: () => import('./defang/DefangTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M12 3 4 6v5c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6z', 'm8 12 2.5 2.5L16 9'] },
+  },
+  {
+    id: 'soc-tools.timestamp', nameKey: 'tools.timestamp.name', descriptionKey: 'tools.timestamp.description',
+    category: 'time', routePath: '/tools/timestamp', component: () => import('./timestamp/TimestampTool.vue'),
+    recommendedMaxInputBytes: 4_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18', 'M12 7v5l3 2'] },
+  },
 ] as const satisfies readonly ToolDefinition[]
 
 export function getTool(id: ToolDefinition['id']): ToolDefinition {
