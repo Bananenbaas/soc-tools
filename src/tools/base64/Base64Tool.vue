@@ -54,43 +54,45 @@ async function copyOutput() {
       <h1 id="tool-title">{{ t(tool.nameKey) }}</h1>
       <p>{{ t(tool.descriptionKey) }}</p>
     </header>
-    <div class="option-grid">
-      <fieldset>
-        <legend>{{ t('tools.base64.mode') }}</legend>
-        <label><input v-model="mode" type="radio" value="encode" @change="transform" /> {{ t('tools.base64.encode') }}</label>
-        <label><input v-model="mode" type="radio" value="decode" @change="transform" /> {{ t('tools.base64.decode') }}</label>
-      </fieldset>
-      <fieldset>
-        <legend>{{ t('tools.base64.variant') }}</legend>
-        <label><input v-model="variant" type="radio" value="base64" @change="transform" /> {{ t('tools.base64.standard') }}</label>
-        <label><input v-model="variant" type="radio" value="base64url" @change="transform" /> {{ t('tools.base64.url') }}</label>
-      </fieldset>
-    </div>
-    <p v-if="isOverLimit" class="notice warning" role="status">
-      {{ t('tools.base64.warning', { size: formattedLimit }) }}
-    </p>
-    <div class="editor-grid">
-      <div class="field">
-        <div class="field-heading">
-          <label for="base64-input">{{ t('tools.base64.input') }}</label>
-          <button class="secondary-button" type="button" @click="clear">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6" /></svg>
-            {{ t('tools.base64.clear') }}
-          </button>
-        </div>
-        <textarea id="base64-input" v-model="input" :placeholder="t('tools.base64.inputPlaceholder')" spellcheck="false" @input="transform" />
+    <div class="io-panel">
+      <div class="terminal-titlebar">
+        <span class="window-marks" aria-hidden="true"><i /><i /><i /></span>
+        <span>[ base64 ]</span>
       </div>
-      <div class="field">
-        <div class="field-heading">
-          <label for="base64-output">{{ t('tools.base64.output') }}</label>
-          <button class="secondary-button" type="button" :disabled="!output" @click="copyOutput">
+      <div class="io-strip">
+        <fieldset>
+          <legend>{{ t('tools.base64.mode') }}</legend>
+          <label class="radio-control"><input v-model="mode" type="radio" value="encode" @change="transform" /><span>{{ t('tools.base64.encode') }}</span></label>
+          <label class="radio-control"><input v-model="mode" type="radio" value="decode" @change="transform" /><span>{{ t('tools.base64.decode') }}</span></label>
+        </fieldset>
+        <span class="strip-divider" aria-hidden="true" />
+        <fieldset>
+          <legend>{{ t('tools.base64.variant') }}</legend>
+          <label class="radio-control"><input v-model="variant" type="radio" value="base64" @change="transform" /><span>{{ t('tools.base64.standard') }}</span></label>
+          <label class="radio-control"><input v-model="variant" type="radio" value="base64url" @change="transform" /><span>{{ t('tools.base64.url') }}</span></label>
+        </fieldset>
+        <span class="byte-count">{{ t('tools.base64.bytes', { count: inputBytes }) }}</span>
+        <div class="strip-actions">
+          <button class="icon-button" type="button" :disabled="!output" :aria-label="copied ? t('tools.base64.copied') : t('tools.base64.copy')" @click="copyOutput">
             <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" /></svg>
-            {{ copied ? t('tools.base64.copied') : t('tools.base64.copy') }}
+          </button>
+          <button class="icon-button" type="button" :aria-label="t('tools.base64.clear')" @click="clear">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6" /></svg>
           </button>
         </div>
-        <textarea id="base64-output" :value="output" :placeholder="t('tools.base64.outputPlaceholder')" readonly />
       </div>
+      <p v-if="isOverLimit" class="notice warning" role="status">{{ t('tools.base64.warning', { size: formattedLimit }) }}</p>
+      <div class="editor-grid">
+        <div class="field">
+          <label for="base64-input"><span aria-hidden="true">$</span> {{ t('tools.base64.input') }}</label>
+          <div class="terminal-editor input-editor"><span class="editor-prompt" aria-hidden="true">$</span><textarea id="base64-input" v-model="input" :class="{ invalid: error }" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'base64-error' : undefined" :placeholder="t('tools.base64.inputPlaceholder')" spellcheck="false" @input="transform" /><span class="fake-caret" aria-hidden="true" /></div>
+        </div>
+        <div class="field">
+          <label for="base64-output"><span aria-hidden="true">&gt;</span> {{ t('tools.base64.output') }}</label>
+          <div class="terminal-editor"><span class="editor-prompt" aria-hidden="true">&gt;</span><textarea id="base64-output" :value="output" :placeholder="t('tools.base64.outputPlaceholder')" readonly /></div>
+        </div>
+      </div>
+      <p v-if="error" id="base64-error" class="notice error" role="alert">{{ error }}</p>
     </div>
-    <p v-if="error" class="notice error" role="alert">{{ error }}</p>
   </section>
 </template>

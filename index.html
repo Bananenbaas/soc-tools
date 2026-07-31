@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Client-side tools for SOC analysts" />
     <!-- Deze kleine blokkende script-tag is de enige inline code en kan met een CSP-hash worden toegestaan. -->
-    <script>try{const t=localStorage.getItem("soc-tools-theme");document.documentElement.dataset.theme=t==="light"||t==="dark"?t:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";const s=localStorage.getItem("soc-tools-text-size");if(["14","15","16","17","18","19","20"].includes(s||""))document.documentElement.dataset.textSize=s}catch{document.documentElement.dataset.theme="light"}</script>
+    <script>try{const d=document.documentElement,t=localStorage.getItem("soc-tools-theme"),n=localStorage.getItem("soc-tools-theme-name");if(t==="light"||t==="dark")d.dataset.theme=t;if(["terminal","slate","frost","contrast"].includes(n||""))d.dataset.themeName=n;else d.dataset.themeName="terminal";const s=localStorage.getItem("soc-tools-text-size");if(["14","15","16","17","18","19","20"].includes(s||""))d.dataset.textSize=s}catch{document.documentElement.dataset.themeName="terminal"}</script>
     <title>SOC-Tools</title>
   </head>
   <body>
