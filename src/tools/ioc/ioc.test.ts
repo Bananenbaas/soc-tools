@@ -55,6 +55,20 @@ describe('IOC extraction and normalization', () => {
     expect(result.rejectedCount).toBeGreaterThan(0)
   })
 
+  it('rejects file extensions as standalone domain TLDs while preserving real and contextual domains', () => {
+    const text = 'regsvr32.exe scrobj.dll example.com sub.example.co.uk xn--bcher-kva.de http://regsvr32.exe/file.dll user@scrobj.dll'
+    const result = extractIocs(text)
+
+    expect(result.groups.find((group) => group.type === 'domain')?.entries.map((entry) => entry.value)).toEqual([
+      'example.com',
+      'sub.example.co.uk',
+      'xn--bcher-kva.de',
+    ])
+    expect(result.groups.find((group) => group.type === 'url')?.entries.map((entry) => entry.value)).toEqual(['http://regsvr32.exe/file.dll'])
+    expect(result.groups.find((group) => group.type === 'email')?.entries.map((entry) => entry.value)).toEqual(['user@scrobj.dll'])
+    expect(result.rejectedCount).toBe(2)
+  })
+
   it('can return defanged values and export report rows', () => {
     const result = extractIocs('https://Example.com/A', { output: 'defang' })
     expect(result.groups.find((group) => group.type === 'url')?.entries[0]?.value).toBe('hxxps[://]example[.]com/A')

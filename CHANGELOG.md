@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PowerShell EncodedCommand Decoder: recognise `-e`/`-enc`/`-EncodedCommand`, decode the Base64 payload as UTF-16LE, and show the script alongside a hex/bytes view, printable strings, extracted indicators/cmdlets, and a best-effort de-obfuscation view. It decodes only — it never executes anything.
 - Windows Event XML Parser: turn pasted Windows Event XML (Event Viewer / Sysmon) or exported JSON into a structured triage summary — key fields highlighted (Event ID, provider, computer, user/SID, process/parent, command line, timestamps in UTC and Europe/Amsterdam) plus a full captured-field table. XML is parsed with the browser's DOMParser (XXE-safe).
 
+### Fixed
+
+- IOC domain recognition no longer accepts common file extensions (`.exe`, `.dll`, `.sct`, …) as a domain TLD, so file names like `regsvr32.exe` are no longer misread as domains.
+
 ## [1.0.0] - 2026-07-31
 
 ### Added

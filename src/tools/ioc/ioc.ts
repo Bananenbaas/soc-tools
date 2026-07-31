@@ -43,6 +43,11 @@ const HASH_CANDIDATE = /(?<![a-f0-9])[a-f0-9]{32}(?:[a-f0-9]{8})?(?:[a-f0-9]{24}
 const CVE_CANDIDATE = /(?<![a-z0-9])CVE-\d{4}-\d{4,}(?!\d)/giu
 const WINDOWS_PATH_CANDIDATE = /(?:\b[A-Za-z]:\\|\\\\[A-Za-z0-9._$-]+\\)[^\s<>|"?*]+/gu
 const REGISTRY_CANDIDATE = /\b(?:HKEY_(?:LOCAL_MACHINE|CURRENT_USER|CLASSES_ROOT|USERS|CURRENT_CONFIG)|HKLM|HKCU|HKCR|HKU|HKCC)\\[^\s,;]+/giu
+const FILE_EXTENSION_TLDS = new Set([
+  'exe', 'dll', 'sct', 'ps1', 'psm1', 'psd1', 'bat', 'cmd', 'vbs', 'vbe', 'js', 'jse', 'wsf', 'wsh', 'hta', 'scr', 'msi', 'msc', 'cpl', 'sys', 'drv', 'ocx', 'lnk',
+  'tmp', 'dat', 'log', 'txt', 'ini', 'cfg', 'xml', 'json', 'csv', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'zip', 'rar', '7z', 'tar', 'gz',
+  'png', 'jpg', 'jpeg', 'gif', 'bin', 'img', 'iso',
+])
 
 function stripTrailing(value: string): string {
   return value.replace(TRAILING_PUNCTUATION, '')
@@ -69,6 +74,11 @@ function validDomain(value: string): boolean {
   return labels.length >= 2
     && (/^[a-z]{2,63}$/iu.test(tld) || /^xn--[a-z0-9-]{2,59}$/iu.test(tld))
     && labels.every((label) => label.length <= 63 && /^(?!-)[a-z0-9-]+(?<!-)$/iu.test(label))
+}
+
+function validDomainCandidate(value: string): boolean {
+  const tld = value.slice(value.lastIndexOf('.') + 1).toLowerCase()
+  return validDomain(value) && !FILE_EXTENSION_TLDS.has(tld)
 }
 
 function normalizeUrl(value: string): string | undefined {
@@ -154,7 +164,7 @@ export function extractIocs(text: string, options: ExtractIocOptions = {}): IocR
       if (validIpv6(candidate.value)) found.push({ type: 'ipv6', value: candidate.value.toLowerCase(), line: lineNumber })
       else rejectedCount += 1
     }
-    rejectedCount += addMatches(line, lineNumber, DOMAIN_CANDIDATE, 'domain', found, occupied, (value) => validDomain(value) ? value.toLowerCase() : undefined)
+    rejectedCount += addMatches(line, lineNumber, DOMAIN_CANDIDATE, 'domain', found, occupied, (value) => validDomainCandidate(value) ? value.toLowerCase() : undefined)
   })
 
   const grouped = new Map<IocType, Map<string, IocEntry>>()
