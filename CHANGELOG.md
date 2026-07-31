@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Redesigned the app shell into a two-pane analyst-console layout and replaced the theme control with a clear light/dark (sun/moon) toggle that follows the system preference by default.
 - Enforced each tool's recommended input-size limit (previously only a warning) with debounced processing, and moved hashing into a cancellable Web Worker so large inputs cannot freeze the tab.
-- Moved the build toolchain to Node 24 (LTS) and updated development dependencies (Vitest 4, vue-i18n, `@types/node`).
+- Moved the build toolchain to Node 24 (LTS) and updated dependencies: Vite 8, Vue Router 5, Vitest 4, vue-i18n, and `@types/node`.
 
 ### Security
 
