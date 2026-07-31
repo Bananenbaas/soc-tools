@@ -1,9 +1,15 @@
 # SOC-Tools
 
-SOC-Tools is an open-source collection of focused utilities for security operations center analysts. The project is in its MVP phase; its first tool encodes and decodes UTF-8 text using Base64 or Base64URL.
+[![CI](https://github.com/Bananenbaas/soc-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/Bananenbaas/soc-tools/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/Bananenbaas/soc-tools)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/Bananenbaas/soc-tools)](https://github.com/Bananenbaas/soc-tools/releases)
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-live-F38020?logo=cloudflare&logoColor=white)](https://soc-tools.pages.dev)
 
-Tools are designed to run in the browser and the current Base64 tool does not send its input over the network. Browser extensions, hosting infrastructure, or future integrations may affect that boundary, so review the deployment and source before handling data.
+SOC-Tools is an open-source collection of focused, client-side utilities for security operations center analysts: Base64/Hex/URL encoding and decoding, JWT inspection, hashing, IOC defang/refang, and timestamp conversion.
 
+The tools run entirely in the browser and do not send your input over the network. Browser extensions, hosting infrastructure, or future integrations may affect that boundary, so review the deployment and source before handling sensitive data.
+
+Live demo: [soc-tools.pages.dev](https://soc-tools.pages.dev)  
 Repository: [github.com/Bananenbaas/soc-tools](https://github.com/Bananenbaas/soc-tools)
 
 ## Development
