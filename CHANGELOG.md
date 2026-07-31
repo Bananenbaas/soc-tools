@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-31
+
 ### Added
 
 - JavaScript Deobfuscator: peel common obfuscation (base64/hex/unicode escapes, `String.fromCharCode`, string concatenation, the Dean Edwards packer) statically as data, plus an opt-in, isolated QuickJS-WASM sandbox (run in a Web Worker, no host bindings, CPU/memory/stack limited) that reveals JSFuck and dynamically-built payloads by capturing them as text without executing them.
