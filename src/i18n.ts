@@ -29,7 +29,7 @@ const messages = {
       noResults: 'No tools match this filter.',
     },
     themes: { terminal: 'Terminal', slate: 'Slate', frost: 'Frost', contrast: 'High contrast' },
-    categories: { encoding: 'Encoding', inspection: 'Inspection', hashing: 'Hashing', 'threat-intel': 'Threat intelligence', time: 'Time' },
+    categories: { encoding: 'Encoding', inspection: 'Inspection', hashing: 'Hashing', 'threat-intel': 'Threat intelligence', time: 'Time', windows: 'Windows / DFIR' },
     common: { operation: 'Operation', encode: 'Encode', decode: 'Decode', input: 'Input', output: 'Output', result: 'The result appears here', clear: 'Clear input and output', copy: 'Copy output', copied: 'Copied', inputTooLarge: 'This input exceeds the {size} limit and was not processed.' },
     tools: {
       base64: {
@@ -59,6 +59,12 @@ const messages = {
       defang: { name: 'Defang / refang', description: 'Make common indicators safer to share, or restore analyst notation.', defang: 'Defang', refang: 'Refang', limitation: 'Textual replacement only. Review the result before opening or executing anything.', placeholder: 'Enter URLs, domains, IP addresses, or email addresses' },
       ioc: { name: 'IOC Extractor & Normalizer', description: 'Recognize, validate, and normalize indicators from free text for incident reports.', outputMode: 'Output', defanged: 'Defanged', refanged: 'Refanged', limitation: 'Recognition is not a maliciousness verdict. Review candidates and context before using them.', placeholder: 'Paste an email, alert, or log lines', lines: 'lines', rejected: 'Rejected or ambiguous candidates', downloadCsv: 'Download CSV report', downloadJson: 'Download JSON report', types: { ipv4: 'IPv4', ipv6: 'IPv6', domain: 'Domains', url: 'URLs', md5: 'MD5', sha1: 'SHA-1', sha256: 'SHA-256', email: 'Email addresses', cve: 'CVEs', 'windows-path': 'Windows paths', 'registry-key': 'Registry keys' } },
       timestamp: { name: 'Timestamp converter', description: 'Convert Unix, Windows FILETIME, and human date-times.', inputType: 'Input format', seconds: 'Unix seconds', milliseconds: 'Unix milliseconds', filetime: 'Windows FILETIME', human: 'Human date-time', limitation: 'Human date-times without an explicit offset use the browser’s local time zone.', invalid: 'Invalid or out-of-range timestamp. Use an integer or a recognized date-time with an explicit time zone.', placeholder: 'Enter a timestamp or date-time' },
+      eventxml: {
+        name: 'Windows Event XML Parser', description: 'Turn Windows Event XML or exported JSON into a structured triage summary.', placeholder: 'Paste one or more Windows Event XML blocks, or exported JSON', limitation: 'Parsing and field highlighting only. No content is executed and no malicious or benign judgment is made.', event: 'Event', eventCount: '{count} event | {count} events', allFields: 'All captured fields', section: 'Section', key: 'Field', value: 'Value',
+        errors: { empty: 'Paste Windows Event XML or exported JSON.', invalidXml: 'The XML is malformed and could not be parsed. Check that every tag is complete and properly closed.', invalidJson: 'The input is not valid JSON. Paste a single event object or an array of event objects.', noEvents: 'No Windows Event records were found in this input.' },
+        fields: { eventId: 'Event ID', provider: 'Provider', computer: 'Computer', channel: 'Channel', level: 'Level', task: 'Task', user: 'User', sid: 'SID', logonType: 'Logon type', process: 'Process', parentProcess: 'Parent process', commandLine: 'Command line', sourceIp: 'Source IP', sourcePort: 'Source port', destinationIp: 'Destination IP', destinationPort: 'Destination port' },
+        logonTypes: { interactive: 'Interactive', network: 'Network', batch: 'Batch', service: 'Service', unlock: 'Unlock', networkCleartext: 'Network cleartext', newCredentials: 'New credentials', remoteInteractive: 'Remote interactive', cachedInteractive: 'Cached interactive' },
+      },
     },
   },
   nl: {
@@ -89,7 +95,7 @@ const messages = {
       noResults: 'Geen tools gevonden voor dit filter.',
     },
     themes: { terminal: 'Terminal', slate: 'Leisteen', frost: 'Vorst', contrast: 'Hoog contrast' },
-    categories: { encoding: 'Codering', inspection: 'Inspectie', hashing: 'Hashing', 'threat-intel': 'Dreigingsinformatie', time: 'Tijd' },
+    categories: { encoding: 'Codering', inspection: 'Inspectie', hashing: 'Hashing', 'threat-intel': 'Dreigingsinformatie', time: 'Tijd', windows: 'Windows / DFIR' },
     common: { operation: 'Bewerking', encode: 'Coderen', decode: 'Decoderen', input: 'Invoer', output: 'Uitvoer', result: 'Het resultaat verschijnt hier', clear: 'Wis invoer en uitvoer', copy: 'Kopieer uitvoer', copied: 'Gekopieerd', inputTooLarge: 'Deze invoer overschrijdt de limiet van {size} en is niet verwerkt.' },
     tools: {
       base64: {
@@ -119,6 +125,12 @@ const messages = {
       defang: { name: 'Defang / refang', description: 'Maak veelvoorkomende indicatoren veiliger om te delen, of herstel de notatie.', defang: 'Defang', refang: 'Refang', limitation: 'Alleen tekstuele vervanging. Controleer het resultaat voordat je iets opent of uitvoert.', placeholder: 'Voer URL’s, domeinen, IP-adressen of e-mailadressen in' },
       ioc: { name: 'IOC-extractor en normalisator', description: 'Herken, valideer en normaliseer indicatoren uit vrije tekst voor incidentrapporten.', outputMode: 'Uitvoer', defanged: 'Defanged', refanged: 'Refanged', limitation: 'Herkenning is geen oordeel over kwaadaardigheid. Controleer kandidaten en context vóór gebruik.', placeholder: 'Plak een e-mail, waarschuwing of logregels', lines: 'regels', rejected: 'Afgewezen of dubbelzinnige kandidaten', downloadCsv: 'Download CSV-rapport', downloadJson: 'Download JSON-rapport', types: { ipv4: 'IPv4', ipv6: 'IPv6', domain: 'Domeinen', url: 'URL’s', md5: 'MD5', sha1: 'SHA-1', sha256: 'SHA-256', email: 'E-mailadressen', cve: 'CVE’s', 'windows-path': 'Windows-paden', 'registry-key': 'Registersleutels' } },
       timestamp: { name: 'Tijdstempelconverter', description: 'Converteer Unix, Windows FILETIME en leesbare datum/tijd.', inputType: 'Invoerformaat', seconds: 'Unix-seconden', milliseconds: 'Unix-milliseconden', filetime: 'Windows FILETIME', human: 'Leesbare datum/tijd', limitation: 'Een datum/tijd zonder expliciete offset gebruikt de lokale tijdzone van de browser.', invalid: 'Ongeldige tijdstempel of buiten bereik. Gebruik een geheel getal of herkenbare datum/tijd met tijdzone.', placeholder: 'Voer een tijdstempel of datum/tijd in' },
+      eventxml: {
+        name: 'Windows Event XML-parser', description: 'Zet Windows Event XML of geëxporteerde JSON om in een gestructureerd triageoverzicht.', placeholder: 'Plak een of meer Windows Event XML-blokken of geëxporteerde JSON', limitation: 'Alleen parseren en velden uitlichten. Er wordt niets uitgevoerd en er wordt geen oordeel over kwaadaardig of goedaardig gegeven.', event: 'Gebeurtenis', eventCount: '{count} gebeurtenis | {count} gebeurtenissen', allFields: 'Alle vastgelegde velden', section: 'Sectie', key: 'Veld', value: 'Waarde',
+        errors: { empty: 'Plak Windows Event XML of geëxporteerde JSON.', invalidXml: 'De XML is ongeldig en kon niet worden verwerkt. Controleer of alle tags volledig en juist afgesloten zijn.', invalidJson: 'De invoer is geen geldige JSON. Plak één gebeurtenisobject of een reeks gebeurtenisobjecten.', noEvents: 'In deze invoer zijn geen Windows-gebeurtenissen gevonden.' },
+        fields: { eventId: 'Gebeurtenis-id', provider: 'Provider', computer: 'Computer', channel: 'Kanaal', level: 'Niveau', task: 'Taak', user: 'Gebruiker', sid: 'SID', logonType: 'Aanmeldingstype', process: 'Proces', parentProcess: 'Bovenliggend proces', commandLine: 'Opdrachtregel', sourceIp: 'Bron-IP', sourcePort: 'Bronpoort', destinationIp: 'Doel-IP', destinationPort: 'Doelpoort' },
+        logonTypes: { interactive: 'Interactief', network: 'Netwerk', batch: 'Batch', service: 'Service', unlock: 'Ontgrendeling', networkCleartext: 'Netwerk met leesbare referenties', newCredentials: 'Nieuwe referenties', remoteInteractive: 'Interactief op afstand', cachedInteractive: 'Interactief met cache' },
+      },
     },
   },
 } as const

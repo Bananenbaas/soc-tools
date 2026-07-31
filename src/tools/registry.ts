@@ -62,6 +62,12 @@ export const toolRegistry = [
     recommendedMaxInputBytes: 4_000,
     icon: { viewBox: '0 0 24 24', paths: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18', 'M12 7v5l3 2'] },
   },
+  {
+    id: 'soc-tools.eventxml', nameKey: 'tools.eventxml.name', descriptionKey: 'tools.eventxml.description',
+    category: 'windows', routePath: '/tools/windows-event', component: () => import('./eventxml/EventXmlTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M6 3h9l4 4v14H6z', 'M15 3v5h4', 'M9 12h7', 'M9 16h7'] },
+  },
 ] as const satisfies readonly ToolDefinition[]
 
 export function getTool(id: ToolDefinition['id']): ToolDefinition {
