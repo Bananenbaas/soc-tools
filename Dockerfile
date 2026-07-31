@@ -1,6 +1,6 @@
 # De build-output (dist/) is arch-neutraal, dus de Node-build draait op de builder-arch
 # ($BUILDPLATFORM) i.p.v. geëmuleerd per doel-arch — alleen de nginx-runtime is per arch.
-FROM --platform=$BUILDPLATFORM node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 AS build
+FROM --platform=$BUILDPLATFORM node:24-alpine@sha256:f70403e87646dc51b45295f4b8b70cdad0b63d2297c4c9899119b03f7af7a6b3 AS build
 
 WORKDIR /app
 COPY package.json package-lock.json ./
