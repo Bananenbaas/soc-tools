@@ -1,0 +1,13 @@
+# This file concerns the security of this deployed instance and domain, not the
+# SOC-Tools source code. Self-hosters must replace every placeholder value below
+# with details for their own deployment before going live.
+# Report vulnerabilities in the SOC-Tools code to the project:
+# https://github.com/Bananenbaas/soc-tools/security/advisories/new
+
+Contact: mailto:security@your-domain.example
+# REQUIRED: replace this placeholder with a real ISO 8601 timestamp in the future.
+Expires: 2099-12-31T23:59:59Z
+Preferred-Languages: en, nl
+Canonical: https://your-domain.example/.well-known/security.txt
+# Encryption: https://your-domain.example/security/pgp-key.txt
+# Policy: https://your-domain.example/security-policy

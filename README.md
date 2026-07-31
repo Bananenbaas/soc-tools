@@ -101,6 +101,13 @@ SOC-Tools is a security tool, so its own boundaries are stated explicitly. See
 [THREAT_MODEL.md](THREAT_MODEL.md) for what the project defends against, what it
 deliberately does not, and why "client-side" is a genuine but non-absolute claim.
 
+### Responsible disclosure
+
+Report source-code vulnerabilities through [SECURITY.md](SECURITY.md) and GitHub
+Security Advisories. For issues with a specific deployed instance, use that
+site's `/.well-known/security.txt`; self-hosters must fill in that file for their
+own domain.
+
 ## Disclaimer
 
 Do not enter sensitive or classified data unless you are authorized to process it in the browser and have reviewed your environment. SOC-Tools is provided without warranty; validate results before using them in operational decisions.
