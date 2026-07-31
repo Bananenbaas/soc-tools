@@ -45,6 +45,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M12 3 4 6v5c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6z', 'm8 12 2.5 2.5L16 9'] },
   },
   {
+    id: 'soc-tools.ioc', nameKey: 'tools.ioc.name', descriptionKey: 'tools.ioc.description',
+    category: 'threat-intel', routePath: '/tools/ioc', component: () => import('./ioc/IocTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M12 3v3', 'M12 18v3', 'M3 12h3', 'M18 12h3', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'] },
+  },
+  {
     id: 'soc-tools.timestamp', nameKey: 'tools.timestamp.name', descriptionKey: 'tools.timestamp.description',
     category: 'time', routePath: '/tools/timestamp', component: () => import('./timestamp/TimestampTool.vue'),
     recommendedMaxInputBytes: 4_000,
