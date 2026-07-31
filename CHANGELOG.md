@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-07-31
+
+### Added
+
+- Strings Extractor: pull readable ASCII and UTF-16 (LE/BE) strings — with byte offsets — out of an uploaded file or pasted hex/base64 bytes, surface any URLs, paths, and other indicators found inside, and export as CSV/JSON. Everything is read locally; nothing is uploaded.
+
 ## [1.2.0] - 2026-07-31
 
 ### Added

@@ -75,6 +75,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M5 6a2 2 0 1 0 0 .01', 'M19 6a2 2 0 1 0 0 .01', 'M12 18a2 2 0 1 0 0 .01', 'M7 6h10', 'm6.5 8.2 4-6.4', 'm10.5 6.4 4 6.4'] },
   },
   {
+    id: 'soc-tools.strings', nameKey: 'tools.strings.name', descriptionKey: 'tools.strings.description',
+    category: 'dfir', routePath: '/tools/strings', component: () => import('./strings/StringsTool.vue'),
+    recommendedMaxInputBytes: 10_000_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 6h10', 'M4 11h7', 'M4 16h6', 'M17 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8', 'm20 14 2 2'] },
+  },
+  {
     id: 'soc-tools.eventxml', nameKey: 'tools.eventxml.name', descriptionKey: 'tools.eventxml.description',
     category: 'windows', routePath: '/tools/windows-event', component: () => import('./eventxml/EventXmlTool.vue'),
     recommendedMaxInputBytes: 1_000_000,
