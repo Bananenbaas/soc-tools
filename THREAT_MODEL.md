@@ -4,10 +4,9 @@ This document describes what SOC-Tools defends against, what it deliberately doe
 *not* defend against, and why. It is intentionally short and honest: a clear
 boundary is more useful to an analyst than an exhaustive list that overpromises.
 
-The scope below covers the **MVP** (client-side encoding/decoding and inspection
-tools, no backend, no accounts). It is revisited as later phases add capabilities
-(deobfuscation, external lookups, plugins) — each of which introduces its own
-threats and will extend this document.
+The scope covers the client-side tools, including the JavaScript deobfuscation
+sandbox, with no backend or accounts. It is revisited as external lookups or
+plugins add new trust boundaries.
 
 ## What SOC-Tools is
 
@@ -30,6 +29,7 @@ require no account. There is no backend to compromise in this phase.
 |---|---|
 | **XSS / unsafe output rendering** | No `v-html` on tool input or results; output is always rendered as text. Vue escapes bindings by default. A strict Content Security Policy (see below) is a design target. |
 | **Malicious or oversized input** (ReDoS, parser hangs, tab freeze) | Each tool declares a recommended maximum input size and warns the user above it. Parsing avoids catastrophic-backtracking patterns; heavy work moves to Web Workers with timeouts as tools that need it are added. |
+| **Untrusted JavaScript submitted for deobfuscation** | Static transforms never evaluate input. Execution is explicit opt-in and occurs in a fresh QuickJS-WASM runtime and context inside a Web Worker, with no DOM, network, storage, Node, or other host bindings. The only bridges capture `eval`, `Function`, and `console` arguments as data. CPU interrupt, memory, and stack limits constrain the VM; terminating the worker provides an independent wall-clock backstop. Captured `eval` and `Function` bodies are returned instead of being executed. |
 | **Data leaking into history / logs / errors** | Tool input is never placed in the URL, never logged, and never sent to analytics. Error messages describe the failure, not the data. |
 | **Clickjacking** | `frame-ancestors` in the CSP (with `X-Frame-Options` for older clients) to prevent the app being framed by a hostile site. |
 | **Supply-chain compromise of dependencies** | No third-party CDNs for scripts, fonts, icons, or images — everything is bundled. Lockfile committed; dependency advisories tracked; base tooling pinned. |
@@ -38,11 +38,16 @@ require no account. There is no backend to compromise in this phase.
 
 The application is built to run under a strict CSP **without** `unsafe-eval` and
 `unsafe-inline`. Vue templates are compiled at build time, so no runtime template
-compilation or `eval` is required. The one deliberate exception is a tiny inline
+compilation or JavaScript `eval` is required. The one deliberate exception is a tiny inline
 theme-bootstrap script in `index.html` (it prevents a light/dark flash before the
 app loads); it is small and stable so a hash-based CSP can allow exactly that
-script and nothing else. The production CSP is validated against the built app in
-CI (added in a later phase).
+script and nothing else. `script-src` deliberately includes `'wasm-unsafe-eval'`
+for QuickJS WebAssembly instantiation. This is a narrow relaxation for compiling
+WASM bytes: it does not permit JavaScript `eval` or inline scripts. The single-file
+QuickJS variant embeds those bytes in the worker bundle, so `connect-src 'none'`
+remains intact and no runtime WASM request is needed. `worker-src 'self'` remains
+the worker boundary. The production CSP and sandbox smoke test are validated
+against the built app in CI.
 
 ## Explicitly out of scope
 

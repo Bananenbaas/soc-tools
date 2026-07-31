@@ -5,7 +5,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Bananenbaas/soc-tools)](https://github.com/Bananenbaas/soc-tools/releases)
 [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-live-F38020?logo=cloudflare&logoColor=white)](https://soc-tools.pages.dev)
 
-SOC-Tools is an open-source collection of focused, client-side utilities for security operations center analysts: Base64/Hex/URL encoding and decoding, JWT inspection, hashing, IOC defang/refang, and timestamp conversion.
+SOC-Tools is an open-source collection of focused, client-side utilities for security operations center analysts — encoding/decoding, hashing, IOC extraction, JWT/PowerShell/Windows-event inspection, network-log exploration, and JavaScript deobfuscation.
 
 The tools run entirely in the browser and do not send your input over the network. Browser extensions, hosting infrastructure, or future integrations may affect that boundary, so review the deployment and source before handling sensitive data.
 
@@ -14,13 +14,14 @@ Repository: [github.com/Bananenbaas/soc-tools](https://github.com/Bananenbaas/so
 
 ## Tools
 
-- **Base64** — encode and decode UTF-8 text as Base64 or Base64URL
-- **Hex** — convert text and bytes to and from hexadecimal
-- **URL** — percent-encode and decode URL components or whole URLs
-- **JWT inspect** — read a token's header, payload, and timestamps (no signature verification)
-- **Hash** — MD5 and SHA-1/256/384/512 digests via the Web Crypto API
-- **Defang / refang** — make indicators safe to share, or restore analyst notation
-- **Timestamp** — convert between Unix, Windows FILETIME, and human date-times (UTC and Europe/Amsterdam)
+- **Encoding** — Base64, Hex, and URL encode/decode
+- **Inspection** — JWT inspect (no signature verification) and a PowerShell EncodedCommand decoder
+- **Hashing** — MD5 and SHA-1/256/384/512 digests via the Web Crypto API
+- **Threat intelligence** — Defang/refang and an IOC Extractor & Normalizer
+- **Time** — Timestamp converter (Unix, Windows FILETIME, UTC and Europe/Amsterdam)
+- **Network** — Zeek/Suricata Log Explorer
+- **Windows / DFIR** — Windows Event XML Parser and Command-Line Analyzer
+- **Deobfuscation** — JavaScript Deobfuscator (static peeling plus an optional, isolated QuickJS-WASM sandbox)
 
 ## Development
 
@@ -81,7 +82,7 @@ Vercel does not read `_headers`. Configure both headers and the SPA rewrite in
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self' 'sha256-+oaPpmEiVxNR8PMqJKkpbmIIpqPo7W+iDc6E6/Q2gT4='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" },
+        { "key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self' 'sha256-+oaPpmEiVxNR8PMqJKkpbmIIpqPo7W+iDc6E6/Q2gT4=' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "no-referrer" },

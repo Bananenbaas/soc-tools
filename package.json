@@ -17,6 +17,8 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@jitl/quickjs-singlefile-browser-release-sync": "^0.32.0",
+    "quickjs-emscripten-core": "^0.32.0",
     "vue": "^3.5.0",
     "vue-i18n": "11.4.8",
     "vue-router": "5.2.0"

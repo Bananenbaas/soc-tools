@@ -39,6 +39,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M4 5h16v14H4z', 'm7 9 3 3-3 3', 'M12 15h5'] },
   },
   {
+    id: 'soc-tools.deobfuscator', nameKey: 'tools.deobfuscator.name', descriptionKey: 'tools.deobfuscator.description',
+    category: 'deobfuscation', routePath: '/tools/deobfuscator', component: () => import('./deobfuscator/DeobfuscatorTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M5 4h14v16H5z', 'm8 9 3 3-3 3', 'M13 15h3', 'M8 4V2', 'M16 4V2'] },
+  },
+  {
     id: 'soc-tools.hash', nameKey: 'tools.hash.name', descriptionKey: 'tools.hash.description',
     category: 'hashing', routePath: '/tools/hash', component: () => import('./hash/HashTool.vue'),
     recommendedMaxInputBytes: 5_000_000,

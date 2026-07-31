@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- JavaScript Deobfuscator: peel common obfuscation (base64/hex/unicode escapes, `String.fromCharCode`, string concatenation, the Dean Edwards packer) statically as data, plus an opt-in, isolated QuickJS-WASM sandbox (run in a Web Worker, no host bindings, CPU/memory/stack limited) that reveals JSFuck and dynamically-built payloads by capturing them as text without executing them.
+
+### Security
+
+- The Content-Security-Policy `script-src` now includes `'wasm-unsafe-eval'` — only so the sandbox's WebAssembly VM can be instantiated. `unsafe-eval`/`unsafe-inline` remain absent and `connect-src 'none'` is unchanged; the QuickJS build embeds its WASM, so nothing is fetched at runtime.
+
 ## [1.1.0] - 2026-07-31
 
 ### Added
