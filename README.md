@@ -12,6 +12,16 @@ The tools run entirely in the browser and do not send your input over the networ
 Live demo: [soc-tools.pages.dev](https://soc-tools.pages.dev)  
 Repository: [github.com/Bananenbaas/soc-tools](https://github.com/Bananenbaas/soc-tools)
 
+## Tools
+
+- **Base64** — encode and decode UTF-8 text as Base64 or Base64URL
+- **Hex** — convert text and bytes to and from hexadecimal
+- **URL** — percent-encode and decode URL components or whole URLs
+- **JWT inspect** — read a token's header, payload, and timestamps (no signature verification)
+- **Hash** — MD5 and SHA-1/256/384/512 digests via the Web Crypto API
+- **Defang / refang** — make indicators safe to share, or restore analyst notation
+- **Timestamp** — convert between Unix, Windows FILETIME, and human date-times (UTC and Europe/Amsterdam)
+
 ## Development
 
 Requires a current Node.js LTS release and npm.
