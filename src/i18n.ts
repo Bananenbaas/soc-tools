@@ -30,7 +30,7 @@ const messages = {
     },
     themes: { terminal: 'Terminal', slate: 'Slate', frost: 'Frost', contrast: 'High contrast' },
     categories: { encoding: 'Encoding', inspection: 'Inspection', hashing: 'Hashing', 'threat-intel': 'Threat intelligence', time: 'Time' },
-    common: { operation: 'Operation', encode: 'Encode', decode: 'Decode', input: 'Input', output: 'Output', result: 'The result appears here', clear: 'Clear input and output', copy: 'Copy output', copied: 'Copied', warning: 'This input is larger than the recommended limit of {size}. Your browser may respond slowly.' },
+    common: { operation: 'Operation', encode: 'Encode', decode: 'Decode', input: 'Input', output: 'Output', result: 'The result appears here', clear: 'Clear input and output', copy: 'Copy output', copied: 'Copied', inputTooLarge: 'This input exceeds the {size} limit and was not processed.' },
     tools: {
       base64: {
         name: 'Base64 encode/decode',
@@ -47,7 +47,6 @@ const messages = {
         copy: 'Copy output',
         copied: 'Copied',
         bytes: '{count} B',
-        warning: 'This input is larger than the recommended limit of {size}. Your browser may respond slowly.',
         invalid: 'This is not valid {variant} input. Check its characters and padding.',
         inputPlaceholder: 'Enter text to transform',
         outputPlaceholder: 'The result appears here',
@@ -89,7 +88,7 @@ const messages = {
     },
     themes: { terminal: 'Terminal', slate: 'Leisteen', frost: 'Vorst', contrast: 'Hoog contrast' },
     categories: { encoding: 'Codering', inspection: 'Inspectie', hashing: 'Hashing', 'threat-intel': 'Dreigingsinformatie', time: 'Tijd' },
-    common: { operation: 'Bewerking', encode: 'Coderen', decode: 'Decoderen', input: 'Invoer', output: 'Uitvoer', result: 'Het resultaat verschijnt hier', clear: 'Wis invoer en uitvoer', copy: 'Kopieer uitvoer', copied: 'Gekopieerd', warning: 'Deze invoer is groter dan de aanbevolen limiet van {size}. Je browser kan traag reageren.' },
+    common: { operation: 'Bewerking', encode: 'Coderen', decode: 'Decoderen', input: 'Invoer', output: 'Uitvoer', result: 'Het resultaat verschijnt hier', clear: 'Wis invoer en uitvoer', copy: 'Kopieer uitvoer', copied: 'Gekopieerd', inputTooLarge: 'Deze invoer overschrijdt de limiet van {size} en is niet verwerkt.' },
     tools: {
       base64: {
         name: 'Base64 coderen/decoderen',
@@ -106,7 +105,6 @@ const messages = {
         copy: 'Kopieer uitvoer',
         copied: 'Gekopieerd',
         bytes: '{count} B',
-        warning: 'Deze invoer is groter dan de aanbevolen limiet van {size}. Je browser kan traag reageren.',
         invalid: 'Dit is geen geldige {variant}-invoer. Controleer de tekens en opvulling.',
         inputPlaceholder: 'Voer tekst in om te verwerken',
         outputPlaceholder: 'Het resultaat verschijnt hier',

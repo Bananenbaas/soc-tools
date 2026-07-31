@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getTool } from '../registry'
+import { useToolProcessing } from '../useToolProcessing'
 import { decodeBase64, encodeBase64, type Base64Variant } from './base64'
 
 const { t } = useI18n()
@@ -12,8 +13,6 @@ const error = ref('')
 const mode = ref<'encode' | 'decode'>('encode')
 const variant = ref<Base64Variant>('base64')
 const copied = ref(false)
-const inputBytes = computed(() => new TextEncoder().encode(input.value).byteLength)
-const isOverLimit = computed(() => inputBytes.value > tool.recommendedMaxInputBytes)
 const formattedLimit = computed(() => `${tool.recommendedMaxInputBytes / 1_000_000} MB`)
 
 function transform() {
@@ -32,6 +31,9 @@ function transform() {
     error.value = t('tools.base64.invalid', { variant: t(`tools.base64.${variant.value === 'base64' ? 'standard' : 'url'}`) })
   }
 }
+const { inputBytes, isOverLimit, schedule: scheduleTransform } = useToolProcessing({
+  input, output, error, maxInputBytes: tool.recommendedMaxInputBytes, process: transform,
+})
 
 function clear() {
   input.value = ''
@@ -62,14 +64,14 @@ async function copyOutput() {
       <div class="io-strip">
         <fieldset>
           <legend>{{ t('tools.base64.mode') }}</legend>
-          <label class="radio-control"><input v-model="mode" type="radio" value="encode" @change="transform" /><span>{{ t('tools.base64.encode') }}</span></label>
-          <label class="radio-control"><input v-model="mode" type="radio" value="decode" @change="transform" /><span>{{ t('tools.base64.decode') }}</span></label>
+          <label class="radio-control"><input v-model="mode" type="radio" value="encode" @change="scheduleTransform" /><span>{{ t('tools.base64.encode') }}</span></label>
+          <label class="radio-control"><input v-model="mode" type="radio" value="decode" @change="scheduleTransform" /><span>{{ t('tools.base64.decode') }}</span></label>
         </fieldset>
         <span class="strip-divider" aria-hidden="true" />
         <fieldset>
           <legend>{{ t('tools.base64.variant') }}</legend>
-          <label class="radio-control"><input v-model="variant" type="radio" value="base64" @change="transform" /><span>{{ t('tools.base64.standard') }}</span></label>
-          <label class="radio-control"><input v-model="variant" type="radio" value="base64url" @change="transform" /><span>{{ t('tools.base64.url') }}</span></label>
+          <label class="radio-control"><input v-model="variant" type="radio" value="base64" @change="scheduleTransform" /><span>{{ t('tools.base64.standard') }}</span></label>
+          <label class="radio-control"><input v-model="variant" type="radio" value="base64url" @change="scheduleTransform" /><span>{{ t('tools.base64.url') }}</span></label>
         </fieldset>
         <span class="byte-count">{{ t('tools.base64.bytes', { count: inputBytes }) }}</span>
         <div class="strip-actions">
@@ -81,11 +83,11 @@ async function copyOutput() {
           </button>
         </div>
       </div>
-      <p v-if="isOverLimit" class="notice warning" role="status">{{ t('tools.base64.warning', { size: formattedLimit }) }}</p>
+      <p v-if="isOverLimit" class="notice warning" role="alert">{{ t('common.inputTooLarge', { size: formattedLimit }) }}</p>
       <div class="editor-grid">
         <div class="field">
           <label for="base64-input"><span aria-hidden="true">$</span> {{ t('tools.base64.input') }}</label>
-          <div class="terminal-editor input-editor"><span class="editor-prompt" aria-hidden="true">$</span><textarea id="base64-input" v-model="input" :class="{ invalid: error }" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'base64-error' : undefined" :placeholder="t('tools.base64.inputPlaceholder')" spellcheck="false" @input="transform" /><span class="fake-caret" aria-hidden="true" /></div>
+          <div class="terminal-editor input-editor"><span class="editor-prompt" aria-hidden="true">$</span><textarea id="base64-input" v-model="input" :class="{ invalid: error }" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'base64-error' : undefined" :placeholder="t('tools.base64.inputPlaceholder')" spellcheck="false" @input="scheduleTransform" /><span class="fake-caret" aria-hidden="true" /></div>
         </div>
         <div class="field">
           <label for="base64-output"><span aria-hidden="true">&gt;</span> {{ t('tools.base64.output') }}</label>
