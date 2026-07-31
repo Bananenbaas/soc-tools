@@ -92,6 +92,12 @@ export const toolRegistry = [
     recommendedMaxInputBytes: 256_000,
     icon: { viewBox: '0 0 24 24', paths: ['M4 5h16v14H4z', 'm7 9 3 3-3 3', 'M12 15h5', 'M4 8h16'] },
   },
+  {
+    id: 'soc-tools.winartifacts', nameKey: 'tools.winartifacts.name', descriptionKey: 'tools.winartifacts.description',
+    category: 'windows', routePath: '/tools/windows-artifacts', component: () => import('./winartifacts/WinArtifactsTool.vue'),
+    recommendedMaxInputBytes: 8_192,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 4h6v6H4z', 'M14 4h6v6h-6z', 'M4 14h6v6H4z', 'M14 14h6v6h-6z', 'M10 7h4', 'M7 10v4', 'M17 10v4', 'M10 17h4'] },
+  },
 ] as const satisfies readonly ToolDefinition[]
 
 export function getTool(id: ToolDefinition['id']): ToolDefinition {

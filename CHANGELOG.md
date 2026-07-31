@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-07-31
+
+### Added
+
+- Windows Artifact Converters: a set of everyday Windows/AD converters — SID (binary ↔ string), GUID byte-order, FILETIME/AD timestamps, Chrome/WebKit time, Unix seconds/milliseconds, access-mask flag decoding, logon-type lookup, and integrity-level lookup. Time values are shown in UTC and Europe/Amsterdam.
+
 ## [1.2.1] - 2026-07-31
 
 ### Added
