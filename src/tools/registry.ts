@@ -27,6 +27,19 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1', 'M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1'] },
   },
   {
+    id: 'soc-tools.unicodeinspect',
+    nameKey: 'tools.unicodeinspect.name',
+    descriptionKey: 'tools.unicodeinspect.description',
+    category: 'encoding',
+    routePath: '/tools/unicode-inspector',
+    component: () => import('./unicodeinspect/UnicodeInspectTool.vue'),
+    recommendedMaxInputBytes: 65_536,
+    icon: {
+      viewBox: '0 0 24 24',
+      paths: ['M4 5h10', 'M9 5v10a4 4 0 0 1-4 4', 'M7 12h5', 'M15 8h5', 'm17.5 8-3 11', 'm5 15h4'],
+    },
+  },
+  {
     id: 'soc-tools.jwt', nameKey: 'tools.jwt.name', descriptionKey: 'tools.jwt.description',
     category: 'inspection', routePath: '/tools/jwt', component: () => import('./jwt/JwtTool.vue'),
     recommendedMaxInputBytes: 256_000,
@@ -87,10 +100,36 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M5 6a2 2 0 1 0 0 .01', 'M19 6a2 2 0 1 0 0 .01', 'M12 18a2 2 0 1 0 0 .01', 'M7 6h10', 'm6.5 8.2 4-6.4', 'm10.5 6.4 4 6.4'] },
   },
   {
+    id: 'soc-tools.ipcidr',
+    nameKey: 'tools.ipcidr.name',
+    descriptionKey: 'tools.ipcidr.description',
+    category: 'network',
+    routePath: '/tools/ip-cidr',
+    component: () => import('./ipcidr/IpCidrTool.vue'),
+    recommendedMaxInputBytes: 4_096,
+    icon: {
+      viewBox: '0 0 24 24',
+      paths: ['M4 5h16v14H4z', 'M8 9h8', 'M8 13h3', 'M14 13h2', 'M8 17h8'],
+    },
+  },
+  {
     id: 'soc-tools.strings', nameKey: 'tools.strings.name', descriptionKey: 'tools.strings.description',
     category: 'dfir', routePath: '/tools/strings', component: () => import('./strings/StringsTool.vue'),
     recommendedMaxInputBytes: 10_000_000,
     icon: { viewBox: '0 0 24 24', paths: ['M4 6h10', 'M4 11h7', 'M4 16h6', 'M17 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8', 'm20 14 2 2'] },
+  },
+  {
+    id: 'soc-tools.entropy',
+    nameKey: 'tools.entropy.name',
+    descriptionKey: 'tools.entropy.description',
+    category: 'dfir',
+    routePath: '/tools/entropy',
+    component: () => import('./entropy/EntropyTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: {
+      viewBox: '0 0 24 24',
+      paths: ['M3 17h2V9H3z', 'M8 17h2V5H8z', 'M13 17h2v-7h-2z', 'M18 17h2V3h-2z', 'M3 21h18'],
+    },
   },
   {
     id: 'soc-tools.eventxml', nameKey: 'tools.eventxml.name', descriptionKey: 'tools.eventxml.description',

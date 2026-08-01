@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-08-01
+
+### Added
+
+- Unicode & Homoglyph Inspector: inspect text character-by-character (code point, Unicode general category, script, ASCII), report the writing scripts present and flag mixed-script runs and common confusables, surface invisible/bidirectional/control characters with their positions, show NFC/NFKC normalization, and independently decode backslash/percent/HTML-entity escapes and Punycode (IDN) hostnames. Factual observations only — no verdict.
+- Entropy & Byte Analyzer: measure Shannon entropy (bits/byte and normalized) and per-chunk sliding-window entropy of text or of decoded hex/Base64 bytes, with byte statistics (length, printable ratio, unique/null bytes, most/least common bytes) and plain guidance on what entropy ranges typically mean. Informational only.
+- IP & CIDR Helper: calculate IPv4/IPv6 subnet details (network, broadcast, usable host range, netmask/wildcard, counts, compressed/expanded forms), classify an address (private, loopback, link-local, multicast, documentation, reserved, or global unicast), and check whether an address falls inside a CIDR range — all locally, no verdict.
+
 ## [1.2.4] - 2026-08-01
 
 ### Added
