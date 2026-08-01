@@ -69,6 +69,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18', 'M12 7v5l3 2'] },
   },
   {
+    id: 'soc-tools.querywizard', nameKey: 'tools.querywizard.name', descriptionKey: 'tools.querywizard.description',
+    category: 'detection', routePath: '/tools/query-wizard', component: () => import('./querywizard/QueryWizardTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M3 5h18l-7 8v5l-4 2v-7z', 'M16 16l2 2 3-4'] },
+  },
+  {
     id: 'soc-tools.netlogs', nameKey: 'tools.netlogs.name', descriptionKey: 'tools.netlogs.description',
     category: 'network', routePath: '/tools/network-logs', component: () => import('./netlogs/NetLogsTool.vue'),
     recommendedMaxInputBytes: 5_000_000,

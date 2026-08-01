@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 2026-08-01
+
+### Added
+
+- SIEM Query Wizard: assemble observations (fields/operators/values, AND/OR logic, an IOC list, and a time window) and generate safely-quoted starting queries for Splunk SPL, Microsoft Kusto KQL, Elastic KQL, Elastic EQL, Lucene, and grep/regex, plus Sigma (YAML) and Wazuh (XML) detection-rule skeletons. A quick scratchpad path turns a pasted IOC list or field/value into quoted expressions instantly. It never connects to a SIEM — every output is a starting point to adapt.
+
 ## [1.2.2] - 2026-07-31
 
 ### Added
