@@ -31,7 +31,19 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
       - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+      # Pre-pull de BuildKit-image met retries — een transiente Docker Hub-timeout liet setup-buildx eerder falen.
+      - name: Pre-pull BuildKit image
+        run: |
+          for attempt in 1 2 3; do
+            docker pull moby/buildkit:buildx-stable-1 && exit 0
+            echo "BuildKit pull attempt ${attempt} failed; retrying..." >&2
+            sleep "$((attempt * 15))"
+          done
+          echo "BuildKit pull failed after 3 attempts" >&2
+          exit 1
       - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+        with:
+          driver-opts: image=moby/buildkit:buildx-stable-1
       - uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
