@@ -40,10 +40,36 @@ export const toolRegistry = [
     },
   },
   {
+    id: 'soc-tools.jsonfmt',
+    nameKey: 'tools.jsonfmt.name',
+    descriptionKey: 'tools.jsonfmt.description',
+    category: 'encoding',
+    routePath: '/tools/json',
+    component: () => import('./jsonfmt/JsonFmtTool.vue'),
+    recommendedMaxInputBytes: 1_000_000,
+    icon: {
+      viewBox: '0 0 24 24',
+      paths: ['M8 4 3 12l5 8', 'm16 4 5 8-5 8'],
+    },
+  },
+  {
     id: 'soc-tools.jwt', nameKey: 'tools.jwt.name', descriptionKey: 'tools.jwt.description',
     category: 'inspection', routePath: '/tools/jwt', component: () => import('./jwt/JwtTool.vue'),
     recommendedMaxInputBytes: 256_000,
     icon: { viewBox: '0 0 24 24', paths: ['M12 3v4', 'm12 17v4', 'M3 12h4', 'm17 0h4', 'm5.6 5.6 2.8 2.8', 'm7.6 16.4-2.8 2.8', 'm16.4 16.4 2.8 2.8', 'm16.4 7.6 2.8-2.8'] },
+  },
+  {
+    id: 'soc-tools.certificate',
+    nameKey: 'tools.certificate.name',
+    descriptionKey: 'tools.certificate.description',
+    category: 'inspection',
+    routePath: '/tools/certificate',
+    component: () => import('./certificate/CertificateTool.vue'),
+    recommendedMaxInputBytes: 65_536,
+    icon: {
+      viewBox: '0 0 24 24',
+      paths: ['M6 3h9l4 4v8', 'M15 3v5h4', 'M9 11h5', 'M12 14a4 4 0 1 0 0 8 4 4 0 0 0 0-8z', 'm10 20-1 3 3-1 3 1-1-3'],
+    },
   },
   {
     id: 'soc-tools.psdecoder', nameKey: 'tools.psdecoder.name', descriptionKey: 'tools.psdecoder.description',

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-08-01
+
+### Added
+
+- JSON Formatter & Inspector: pretty-print (2/4/tab indent) or minify JSON, validate with a precise line:column error and excerpt, sort keys recursively, format newline-delimited JSON (JSONL/NDJSON) with a record count, flatten to dotted leaf paths for nested-log triage, escape/unescape JSON string values, and see size/depth/key statistics. String values that look like Base64 or a JWT are decoded as an informational preview only — nothing is executed, verified, or classified.
+- Certificate (PEM / X.509) Inspector: parse a PEM or Base64 X.509 certificate locally with a self-contained ASN.1/DER reader — subject/issuer distinguished names, validity window (UTC and Europe/Amsterdam, with a factual days-remaining note), serial, signature and public-key algorithms, key usage / extended key usage, Subject Alternative Names, basic constraints, SHA-1/SHA-256 fingerprints, and the OIDs of any extensions left undecoded. It is parse-only and informational: it does not verify the signature, chain, trust, or revocation and never contacts a CA, OCSP responder, or CRL.
+
 ## [1.3.0] - 2026-08-01
 
 ### Added
