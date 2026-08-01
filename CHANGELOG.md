@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.4] - 2026-08-01
+
+### Added
+
+- Email Header Parser: paste a raw email header block and get a phishing-triage view — key fields (with MIME encoded-word decoding), the `Received` hop chain ordered origin→delivery with per-hop delays and timestamps in UTC and Europe/Amsterdam, a reported SPF/DKIM/DMARC/ARC authentication summary, and neutral indicator notes (From vs Return-Path/Reply-To domain, extracted IPs/domains). It is informational only — authentication results are self-reported by the receiving servers and there is no verdict.
+
 ## [1.2.3] - 2026-08-01
 
 ### Added

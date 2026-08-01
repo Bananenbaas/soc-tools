@@ -69,6 +69,12 @@ export const toolRegistry = [
     icon: { viewBox: '0 0 24 24', paths: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18', 'M12 7v5l3 2'] },
   },
   {
+    id: 'soc-tools.emailheader', nameKey: 'tools.emailheader.name', descriptionKey: 'tools.emailheader.description',
+    category: 'email', routePath: '/tools/email-header', component: () => import('./emailheader/EmailHeaderTool.vue'),
+    recommendedMaxInputBytes: 256_000,
+    icon: { viewBox: '0 0 24 24', paths: ['M3 5h18v14H3z', 'm3 8 6 5 6-5', 'M7 10h7', 'M7 14h4'] },
+  },
+  {
     id: 'soc-tools.querywizard', nameKey: 'tools.querywizard.name', descriptionKey: 'tools.querywizard.description',
     category: 'detection', routePath: '/tools/query-wizard', component: () => import('./querywizard/QueryWizardTool.vue'),
     recommendedMaxInputBytes: 256_000,
