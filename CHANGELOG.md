@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-08-03
+
+### Added
+
+- Plugin capabilities are now tied to the Content-Security-Policy by a build-time guard: a plugin declares the extra capabilities it needs (currently `wasm` → `wasm-unsafe-eval`), and the build fails if the shipped CSP does not match exactly what the enabled plugins require — no missing directive that would break a capability, and no unjustified eval-like directive. Capabilities are the single source of truth for the CSP's eval-like exceptions.
+- An Open-source / Licenses page (`/licenses`, linked from the sidebar) listing each enabled plugin's name, version, and SPDX license, noting that the core is MIT and third-party plugins may differ.
+- A plugin authoring guide (`docs/PLUGINS.md`) covering the manifest shape, discovery, the `soc-tools.config.ts` enable/disable, the enforced validation rules, the capability/CSP relationship, and the client-side constraints.
+
+### Security
+
+- The production build no longer bundles Vite's `fetch()`-based module-preload polyfill, and a build-artifact test asserts the built `index.html` contains no module-preload/preload links and that the shipped CSP keeps `connect-src 'none'` — so a future change cannot silently reintroduce a runtime network path.
+
+### Fixed
+
+- The Licenses page shows the current application version for the core plugin instead of a stale hardcoded value.
+
 ## [1.6.1] - 2026-08-03
 
 ### Fixed

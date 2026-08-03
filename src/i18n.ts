@@ -11,6 +11,7 @@ const messages = {
       searchPlaceholder: 'Filter tools…', searchToggle: 'Show or hide tool filter',
       drawerToggle: 'Toggle tool navigation', localOnly: 'Processing stays in this browser.',
       footer: 'Use responsibly. Do not process sensitive or classified data without authorization.',
+      licenses: 'Licenses / Open source',
     },
     home: {
       title: 'Tools for SOC analysts', intro: 'Focused utilities that process data locally in your browser.',
@@ -19,6 +20,7 @@ const messages = {
       toolErrorTitle: 'Tool error', toolErrorMessage: 'This tool encountered an error and was safely contained.',
       backHome: 'Back to tools',
     },
+    licenses: { kicker: 'Open source', title: 'Licenses', intro: 'License information for the enabled plugins.', note: 'SOC-Tools Core is MIT licensed; third-party plugins may use different licenses.' },
     ...pluginMessages.en,
     common: { operation: 'Operation', encode: 'Encode', decode: 'Decode', input: 'Input', output: 'Output', result: 'The result appears here', clear: 'Clear input and output', copy: 'Copy output', copied: 'Copied', inputTooLarge: 'This input exceeds the {size} limit and was not processed.' },
   },
@@ -31,6 +33,7 @@ const messages = {
       searchPlaceholder: 'Filter tools…', searchToggle: 'Toon of verberg het toolfilter',
       drawerToggle: 'Toolnavigatie openen of sluiten', localOnly: 'Verwerking blijft in deze browser.',
       footer: 'Gebruik verantwoord. Verwerk geen gevoelige of gerubriceerde gegevens zonder toestemming.',
+      licenses: 'Licenties / Open source',
     },
     home: {
       title: 'Tools voor SOC-analisten', intro: 'Gerichte hulpmiddelen die gegevens lokaal in je browser verwerken.',
@@ -39,6 +42,7 @@ const messages = {
       toolErrorTitle: 'Toolfout', toolErrorMessage: 'Er is een fout in deze tool veilig opgevangen.',
       backHome: 'Terug naar tools',
     },
+    licenses: { kicker: 'Open source', title: 'Licenties', intro: 'Licentiegegevens voor de ingeschakelde plugins.', note: 'SOC-Tools Core valt onder de MIT-licentie; plugins van derden kunnen andere licenties gebruiken.' },
     ...pluginMessages.nl,
     common: { operation: 'Bewerking', encode: 'Coderen', decode: 'Decoderen', input: 'Invoer', output: 'Uitvoer', result: 'Het resultaat verschijnt hier', clear: 'Wis invoer en uitvoer', copy: 'Kopieer uitvoer', copied: 'Gekopieerd', inputTooLarge: 'Deze invoer overschrijdt de limiet van {size} en is niet verwerkt.' },
   },

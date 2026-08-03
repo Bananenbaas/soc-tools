@@ -141,7 +141,7 @@ function setThemeName(event: Event) {
         </section>
         <p v-if="!filteredTools.length" class="rail-empty">{{ t('home.noResults') }}</p>
       </nav>
-      <div class="rail-note"><p>{{ t('app.localOnly') }}</p><p class="rail-version">v{{ version }}</p></div>
+      <div class="rail-note"><p>{{ t('app.localOnly') }}</p><RouterLink class="rail-license-link" to="/licenses">{{ t('app.licenses') }}</RouterLink><p class="rail-version">v{{ version }}</p></div>
     </aside>
     <main id="main-content" class="workspace" tabindex="-1"><RouterView /></main>
   </div>

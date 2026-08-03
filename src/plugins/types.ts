@@ -19,7 +19,6 @@ export interface PluginManifest {
     en: Record<string, unknown>
     nl: Record<string, unknown>
   }
-  // TODO(6b): consume declared capabilities when generating the CSP.
   capabilities?: readonly 'wasm'[]
 }
 

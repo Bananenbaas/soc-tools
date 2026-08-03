@@ -1,6 +1,6 @@
 {
   "name": "soc-tools",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "private": true,
   "description": "Client-side tools for security operations center analysts.",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run --exclude tests/e2e/**",
+    "test": "vitest run --exclude '**/tests/e2e/**'",
     "test:e2e": "playwright test",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit"

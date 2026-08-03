@@ -4,6 +4,7 @@ import { validateConfig, type SocToolsConfig } from './config'
 import type { PluginManifest } from './types'
 import { createMessageTree, mergeMessageTrees } from './merge'
 import { guardUniqueTools, validatePlugins } from './validate'
+import { requiredCapabilityCspTokens } from './capabilities'
 
 type PluginModule = { default: PluginManifest }
 const modules = import.meta.glob<PluginModule>('./*/plugin.ts', { eager: true })
@@ -42,6 +43,15 @@ for (const id of configuredIds) {
 const disabledTools = new Set(pluginConfig.disabledTools ?? [])
 const enabledTools = pluginConfig.enabledTools ? new Set(pluginConfig.enabledTools) : undefined
 
+function pluginIsEnabled(plugin: PluginManifest): boolean {
+  const tools = plugin.provides.tools ?? []
+  if (tools.length === 0) return true
+  return tools.some((tool) => !disabledTools.has(tool.id) && (!enabledTools || enabledTools.has(tool.id)))
+}
+
+export const enabledPlugins = discoveredPlugins.filter(pluginIsEnabled)
+export const requiredPluginCapabilityCspTokens = requiredCapabilityCspTokens(enabledPlugins)
+
 export const toolRegistry: readonly ToolDefinition[] = allTools.filter((tool) =>
   !disabledTools.has(tool.id) && (!enabledTools || enabledTools.has(tool.id)),
 )
@@ -55,3 +65,9 @@ for (const plugin of discoveredPlugins) {
 }
 
 export const pluginMessages = mergedPluginMessages
+
+export const pluginLicenses = enabledPlugins.map((plugin) => ({
+  name: plugin.name,
+  version: plugin.version,
+  license: plugin.license,
+}))

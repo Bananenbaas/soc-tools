@@ -15,6 +15,8 @@ test('production pages render and transform without CSP violations', async ({ pa
 
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Tools for SOC analysts' })).toBeVisible()
+  await page.goto('/licenses')
+  await expect(page.getByRole('heading', { name: 'Licenses' })).toBeVisible()
   await page.goto('/tools/base64')
   await expect(page.getByRole('heading', { name: 'Base64 encode/decode' })).toBeVisible()
   await page.locator('#base64-input').fill('SOC')

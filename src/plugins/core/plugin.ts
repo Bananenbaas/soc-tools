@@ -6,7 +6,7 @@ import { corePluginMessages } from './messages'
 export default definePlugin({
   id: 'soc-tools.core',
   name: 'SOC-Tools Core',
-  version: '1.5.0',
+  version: __APP_VERSION__,
   license: 'MIT',
   pluginApiVersion: PLUGIN_API_VERSION,
   minCoreVersion: '1.5.0',
