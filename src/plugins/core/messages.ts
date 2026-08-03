@@ -44,7 +44,7 @@ export const corePluginMessages = {
         controls: 'JSON controls', mode: 'Mode', indent: 'Indent', tab: 'Tab', placeholder: 'Paste JSON, JSONL, a raw string, or a JSON string literal',
         modes: { format: 'Format', minify: 'Minify', sort: 'Sort keys', flatten: 'Flatten', escape: 'Escape string', unescape: 'Unescape string' },
         validJson: 'Valid JSON.', validJsonl: 'Valid JSONL · {count} records.', validString: 'Valid JSON string literal.', rawString: 'Raw string escaped locally; JSON validation does not apply to this mode.',
-        invalid: 'Invalid input at line {line}, column {column}: {message} · excerpt: {excerpt}',
+        invalid: 'Invalid input at line {line}, column {column}: {message}',
         notes: 'Embedded decode notes', notesHelp: 'Likely Base64 and JWT string values are decoded only for informational preview. They are not executed, verified, or classified.',
         stats: { title: 'Statistics', bytes: 'Input bytes', depth: 'Maximum depth', keys: 'Total keys', objects: 'Objects', arrays: 'Arrays', scalars: 'Scalars' },
       },
@@ -173,7 +173,7 @@ export const corePluginMessages = {
         controls: 'JSON-bediening', mode: 'Modus', indent: 'Inspringing', tab: 'Tab', placeholder: 'Plak JSON, JSONL, een ruwe tekenreeks of een JSON-tekenreeksliteraal',
         modes: { format: 'Formatteren', minify: 'Minimaliseren', sort: 'Sleutels sorteren', flatten: 'Afvlakken', escape: 'Tekenreeks escapen', unescape: 'Tekenreeks unescapen' },
         validJson: 'Geldige JSON.', validJsonl: 'Geldige JSONL · {count} records.', validString: 'Geldige JSON-tekenreeksliteraal.', rawString: 'Ruwe tekenreeks lokaal geëscapet; JSON-validatie is niet van toepassing op deze modus.',
-        invalid: 'Ongeldige invoer op regel {line}, kolom {column}: {message} · fragment: {excerpt}',
+        invalid: 'Ongeldige invoer op regel {line}, kolom {column}: {message}',
         notes: 'Notities bij ingebedde decodering', notesHelp: 'Waarschijnlijke Base64- en JWT-tekenreekswaarden worden alleen gedecodeerd voor een informatief voorbeeld. Ze worden niet uitgevoerd, geverifieerd of geclassificeerd.',
         stats: { title: 'Statistieken', bytes: 'Invoerbytes', depth: 'Maximale diepte', keys: 'Totaal sleutels', objects: 'Objecten', arrays: 'Arrays', scalars: 'Scalaire waarden' },
       },
@@ -258,4 +258,3 @@ export const corePluginMessages = {
     },
   },
 } as const
-

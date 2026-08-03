@@ -14,7 +14,7 @@ export function parseTimestamp(value: string, type: TimestampInputType): number 
     if (Number.isNaN(parsed)) throw new Error('Invalid human date-time')
     return validateEpochMs(parsed)
   }
-  if (!/^-?\d+$/u.test(input)) throw new Error('Timestamp must be an integer')
+  if (!(type === 'filetime' ? /^\d+$/u.test(input) : /^-?\d+$/u.test(input))) throw new Error('Timestamp must be an integer')
   if (type === 'filetime') {
     const ticks = BigInt(input)
     const milliseconds = ticks / 10_000n - FILETIME_EPOCH_OFFSET_MS

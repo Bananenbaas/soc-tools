@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-08-03
+
+### Fixed
+
+- IOC Extractor now recognises compressed IPv6 addresses that start or end with `::` (e.g. `::1`, `fe80::`) and IPv4-mapped forms (`::ffff:192.0.2.1`), which were previously dropped.
+- URL decoder (full mode) preserves userinfo (username/password) and decodes query keys and values independently, so an encoded `%26` inside a value is no longer turned into a query separator and credentials are no longer silently lost.
+- SIEM Query Wizard: Sigma and Wazuh output now represent `not_equals` and the AND/OR combinator instead of emitting everything as positive equality (an OR combined with `not_equals` emits a coarser skeleton with an explicit "review required" note). Field names, data sources, and time expressions are validated per dialect and replaced with a clearly-marked placeholder when unsafe, so a crafted identifier can no longer become unintended query syntax when the starting query is pasted into a SIEM.
+- Certificate Inspector derives elliptic-curve key sizes from the curve OID (a P-256 key now reports 256 bits, not 252) and rejects out-of-range certificate dates instead of silently normalising them.
+- Timestamp converter rejects negative FILETIME values (FILETIME is unsigned); Unix timestamps still accept negatives.
+
+### Security
+
+- The JSON Formatter's validation error no longer echoes an excerpt of the input; it reports only the line, column, and parser reason, so pasted secrets are not reflected back into an error message.
+
 ## [1.6.0] - 2026-08-03
 
 ### Added

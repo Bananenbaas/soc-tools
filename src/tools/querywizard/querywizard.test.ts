@@ -45,6 +45,27 @@ describe('SIEM query dialects', () => {
     expect(document.documentElement.tagName).toBe('rule')
   })
 
+  it('keeps Sigma negation and OR structure semantically visible', () => {
+    const notEqual = generateSigma({ conditions: [{ field: 'user', op: 'not_equals', value: 'admin' }], combinator: 'AND' })
+    expect(notEqual).toContain('filter1:')
+    expect(notEqual).toContain('selection: {}')
+    expect(notEqual).toContain('condition: selection and not filter1')
+    expect(notEqual).not.toContain('selection:\n    user:')
+    const or = generateSigma({ conditions: [{ field: 'user', op: 'equals', value: 'alice' }, { field: 'ip', op: 'equals', value: '192.0.2.1' }], combinator: 'OR' })
+    expect(or).toContain('selection1:')
+    expect(or).toContain('selection2:')
+    expect(or).toContain('condition: 1 of selection*')
+  })
+
+  it('replaces unsafe identifiers in copied query text', () => {
+    const unsafe: QuerySpec = { dataSource: 'Table | drop table X', conditions: [{ field: 'foo] OR *', op: 'equals', value: 'x' }], combinator: 'AND' }
+    for (const id of ['splunk', 'kusto', 'elastic-kql', 'elastic-eql', 'lucene']) {
+      const output = dialects.find((dialect) => dialect.id === id)?.generate(unsafe) ?? ''
+      expect(output).not.toContain('Table | drop table X')
+      expect(output).not.toContain('foo] OR *')
+    }
+  })
+
   it('turns a pasted IOC list into SPL and KQL IN-lists', () => {
     const values = extractIocValues('192.0.2.1\n198.51.100.2')
     const iocSpec: QuerySpec = { conditions: [{ field: 'src_ip', op: 'in', value: values }], combinator: 'AND' }

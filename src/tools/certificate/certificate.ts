@@ -31,6 +31,8 @@ const ALGORITHMS: Record<string, string> = {
   '1.2.840.10045.4.3.4': 'ecdsa-with-SHA512', '1.3.101.112': 'Ed25519',
 }
 const CURVES: Record<string, string> = { '1.2.840.10045.3.1.7': 'P-256', '1.3.132.0.34': 'P-384', '1.3.132.0.35': 'P-521', '1.3.132.0.10': 'secp256k1' }
+const CURVE_KEY_SIZES: Record<string, number> = { '1.2.840.10045.3.1.7': 256, '1.3.132.0.34': 384, '1.3.132.0.35': 521, '1.3.132.0.10': 256 }
+export function keySizeForCurve(oidValue: string): number | undefined { return CURVE_KEY_SIZES[oidValue] }
 const EKU: Record<string, string> = { '1.3.6.1.5.5.7.3.1': 'TLS web server authentication', '1.3.6.1.5.5.7.3.2': 'TLS web client authentication', '1.3.6.1.5.5.7.3.3': 'Code signing', '1.3.6.1.5.5.7.3.4': 'Email protection', '1.3.6.1.5.5.7.3.8': 'Time stamping', '1.3.6.1.5.5.7.3.9': 'OCSP signing' }
 
 function readNode(bytes: Uint8Array, offset: number, limit = bytes.length): Node {
@@ -81,10 +83,23 @@ function parseName(node: Node): DistinguishedName {
   }
   return { attributes, text: attributes.map((item) => `${item.label}=${item.value}`).join(', '), commonName: attributes.find((item) => item.label === 'CN')?.value }
 }
+function checkedDate(year: number, month: number, day: number, hour: number, minute: number, second: number, label: string): number {
+  if (month < 1 || month > 12 || hour > 23 || minute > 59 || second > 59) throw new Error(`Invalid ${label}`)
+  const result = Date.UTC(year, month - 1, day, hour, minute, second)
+  const date = new Date(result)
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day || date.getUTCHours() !== hour || date.getUTCMinutes() !== minute || date.getUTCSeconds() !== second) throw new Error(`Invalid ${label}`)
+  return result
+}
+export function parseCertificateTimeValue(input: string, tag: 23 | 24): number {
+  const match = tag === 23 ? input.match(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})Z$/u) : input.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})Z$/u)
+  const label = tag === 23 ? 'UTCTime' : 'GeneralizedTime'
+  if (!match) throw new Error(`Invalid ${label}`)
+  const year = tag === 23 ? (Number(match[1]) >= 50 ? 1900 + Number(match[1]) : 2000 + Number(match[1])) : Number(match[1])
+  return checkedDate(year, Number(match[2]), Number(match[3]), Number(match[4]), Number(match[5]), Number(match[6]), label)
+}
 function parseTime(node: Node): number {
-  const input = decoder.decode(value(node)); let match: RegExpMatchArray | null
-  if (node.tag === 23) { match = input.match(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})Z$/u); if (!match) throw new Error('Invalid UTCTime'); const year = Number(match[1]); return Date.UTC(year >= 50 ? 1900 + year : 2000 + year, Number(match[2]) - 1, Number(match[3]), Number(match[4]), Number(match[5]), Number(match[6])) }
-  if (node.tag === 24) { match = input.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})Z$/u); if (!match) throw new Error('Invalid GeneralizedTime'); return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4]), Number(match[5]), Number(match[6])) }
+  const input = decoder.decode(value(node))
+  if (node.tag === 23 || node.tag === 24) return parseCertificateTimeValue(input, node.tag)
   throw new Error('Invalid validity time')
 }
 function parseAlgorithm(node: Node): { oid: string; name: string; parameters?: Node } { const fields = children(expect(node, 16, 'algorithm identifier')); const id = oid(fields[0]!); return { oid: id, name: ALGORITHMS[id] ?? id, parameters: fields[1] } }
@@ -141,7 +156,7 @@ export async function inspectCertificate(input: string, now = Date.now()): Promi
     const times = children(expect(validityNode, 16, 'validity')); const notBefore = parseTime(times[0]!); const notAfter = parseTime(times[1]!); const delta = now < notBefore ? notBefore - now : now > notAfter ? now - notAfter : notAfter - now
     const keyAlgorithm = parseAlgorithm(spki[0]!); const keyBits = value(expect(spki[1], 3, 'public key')); let keySize: number | undefined
     if (keyAlgorithm.oid === '1.2.840.113549.1.1.1' && keyBits.length > 1) { const rsa = children(expect(readNode(keyBits.subarray(1), 0), 16, 'RSA public key')); let modulus = value(expect(rsa[0], 2, 'RSA modulus')); if (modulus[0] === 0) modulus = modulus.subarray(1); keySize = modulus.length * 8 }
-    else if (keyAlgorithm.oid === '1.2.840.10045.2.1' && keyBits.length > 1) keySize = (keyBits.length - 2) * 4
+    else if (keyAlgorithm.oid === '1.2.840.10045.2.1' && keyAlgorithm.parameters?.tag === 6) keySize = CURVE_KEY_SIZES[oid(keyAlgorithm.parameters)]
     const output: CertificateInspection = {
       der: decoded.der, pemBlockCount: decoded.pemBlockCount, version, serialHex: integerHex(serial), signatureAlgorithm: signature,
       issuer: parseName(issuerNode), subject: parseName(subjectNode),

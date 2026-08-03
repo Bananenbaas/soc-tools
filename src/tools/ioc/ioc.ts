@@ -117,9 +117,11 @@ function addMatches(line: string, lineNumber: number, regex: RegExp, type: IocTy
 
 function ipv6Candidates(line: string): Array<{ value: string, index: number }> {
   const results: Array<{ value: string, index: number }> = []
-  for (const match of line.matchAll(/(?<![\w:])(?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}(?![\w:])/giu)) {
-    const value = match[0].replace(/^:/u, '').replace(/:$/u, '')
-    if (value.includes(':')) results.push({ value, index: match.index + (match[0].startsWith(':') ? 1 : 0) })
+  for (const match of line.matchAll(/[a-f0-9:.]+/giu)) {
+    const value = match[0]
+    const before = line[match.index - 1]
+    const after = line[match.index + value.length]
+    if (value.includes(':') && !/[\w]/u.test(before ?? '') && !/[\w]/u.test(after ?? '')) results.push({ value, index: match.index })
   }
   return results
 }
@@ -156,7 +158,6 @@ export function extractIocs(text: string, options: ExtractIocOptions = {}): IocR
     rejectedCount += addMatches(line, lineNumber, CVE_CANDIDATE, 'cve', found, occupied, (value) => value.toUpperCase())
     rejectedCount += addMatches(line, lineNumber, REGISTRY_CANDIDATE, 'registry-key', found, occupied)
     rejectedCount += addMatches(line, lineNumber, WINDOWS_PATH_CANDIDATE, 'windows-path', found, occupied)
-    rejectedCount += addMatches(line, lineNumber, IPV4_CANDIDATE, 'ipv4', found, occupied, (value) => validIpv4(value) ? value : undefined)
     for (const candidate of ipv6Candidates(line)) {
       const end = candidate.index + candidate.value.length
       if (occupied.some(([from, to]) => candidate.index < to && end > from)) continue
@@ -164,6 +165,7 @@ export function extractIocs(text: string, options: ExtractIocOptions = {}): IocR
       if (validIpv6(candidate.value)) found.push({ type: 'ipv6', value: candidate.value.toLowerCase(), line: lineNumber })
       else rejectedCount += 1
     }
+    rejectedCount += addMatches(line, lineNumber, IPV4_CANDIDATE, 'ipv4', found, occupied, (value) => validIpv4(value) ? value : undefined)
     rejectedCount += addMatches(line, lineNumber, DOMAIN_CANDIDATE, 'domain', found, occupied, (value) => validDomainCandidate(value) ? value.toLowerCase() : undefined)
   })
 

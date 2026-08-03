@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { decodeCertificateInput, inspectCertificate } from './certificate'
+import { decodeCertificateInput, inspectCertificate, keySizeForCurve, parseCertificateTimeValue } from './certificate'
 
 const CERTIFICATE_PEM = `-----BEGIN CERTIFICATE-----
 MIIEhTCCA22gAwIBAgIIASNFZ4mrze8wDQYJKoZIhvcNAQELBQAwgZwxCzAJBgNV
@@ -34,6 +34,16 @@ describe('certificate inspector', () => {
     const result = decodeCertificateInput(CERTIFICATE_PEM)
     expect(result.ok).toBe(true)
     if (result.ok) { expect(result.value.der[0]).toBe(0x30); expect(result.value.der.length).toBeGreaterThan(900); expect(result.value.pemBlockCount).toBe(1) }
+  })
+  it('maps named EC curves to their defined key sizes', () => {
+    expect(keySizeForCurve('1.2.840.10045.3.1.7')).toBe(256)
+    expect(keySizeForCurve('1.3.132.0.34')).toBe(384)
+    expect(keySizeForCurve('1.2.3.4')).toBeUndefined()
+    expect(parseCertificateTimeValue('240101000000Z', 23)).toBe(Date.UTC(2024, 0, 1))
+  })
+
+  it('rejects out-of-range certificate date components instead of normalizing them', () => {
+    expect(() => parseCertificateTimeValue('20241301000000Z', 24)).toThrow('Invalid GeneralizedTime')
   })
 
   it('extracts X.509 identity, validity, serial, SANs, usages, and constraints', async () => {

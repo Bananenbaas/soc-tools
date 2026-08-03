@@ -18,4 +18,8 @@ describe('Timestamp', () => {
   it.each([['abc', 'seconds'], ['1.5', 'milliseconds'], ['no date', 'human'] ] as const)('rejects invalid %j', (value, type) => {
     expect(() => parseTimestamp(value, type)).toThrow()
   })
+  it('rejects negative FILETIME but accepts non-negative FILETIME', () => {
+    expect(() => parseTimestamp('-1', 'filetime')).toThrow()
+    expect(parseTimestamp('0', 'filetime')).toBe(-11644473600000)
+  })
 })

@@ -22,7 +22,7 @@ function process() {
   stats.value = result.stats
   notes.value = result.notes
   validationError.value = !result.valid
-  if (!result.valid && result.error) validation.value = t('tools.jsonfmt.invalid', { line: result.error.line, column: result.error.column, message: result.error.message, excerpt: result.error.excerpt })
+  if (!result.valid && result.error) validation.value = t('tools.jsonfmt.invalid', { line: result.error.line, column: result.error.column, message: result.error.message })
   else if (mode.value === 'escape') validation.value = t('tools.jsonfmt.rawString')
   else if (mode.value === 'unescape') validation.value = t('tools.jsonfmt.validString')
   else if (result.isJsonLines) validation.value = t('tools.jsonfmt.validJsonl', { count: result.recordCount })

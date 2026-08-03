@@ -15,10 +15,12 @@ describe('JSON formatter and inspector', () => {
   })
 
   it('locates invalid JSON', () => {
-    const result = inspectJson('{\n  "a": 1,\n  "b": }')
+    const secret = '{\n  "a": 1,\n  "secret": }'
+    const result = inspectJson(secret)
     expect(result.valid).toBe(false)
-    expect(result.error).toMatchObject({ line: 3, column: 8 })
-    expect(result.error?.excerpt).toContain('"b": }')
+    expect(result.error).toMatchObject({ line: 3, column: 13 })
+    expect(result.error?.message).toContain('Invalid JSON syntax')
+    expect(result.error?.message).not.toContain('secret')
   })
 
   it('sorts object keys recursively while retaining array order', () => {

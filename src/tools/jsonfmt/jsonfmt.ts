@@ -9,7 +9,6 @@ export interface JsonLocationError {
   line: number
   column: number
   position: number
-  excerpt: string
 }
 
 export interface JsonStats {
@@ -64,10 +63,7 @@ export function locateJsonError(input: string, cause: unknown): JsonLocationErro
   const line = before.split('\n').length
   const lineStart = before.lastIndexOf('\n') + 1
   const column = position - lineStart + 1
-  const excerptStart = Math.max(lineStart, position - 24)
-  const lineEnd = input.indexOf('\n', position)
-  const excerptEnd = Math.min(lineEnd < 0 ? input.length : lineEnd, position + 24)
-  return { message: rawMessage.replace(/^JSON\.parse:\s*/u, ''), line, column, position, excerpt: input.slice(excerptStart, excerptEnd) }
+  return { message: 'Invalid JSON syntax', line, column, position }
 }
 
 function parseJsonLines(input: string): JsonValue[] | undefined {

@@ -34,6 +34,14 @@ describe('IOC extraction and normalization', () => {
     expect(result.rejectedCount).toBe(2)
   })
 
+  it('preserves and validates IPv6 compression and IPv4-mapped forms', () => {
+    const result = extractIocs('::1 fe80:: 2001:db8::1 ::ffff:192.0.2.1 a::b::c')
+    const values = result.groups.find((group) => group.type === 'ipv6')?.entries.map((entry) => entry.value) ?? []
+    expect(values).toHaveLength(4)
+    expect(values).toEqual(expect.arrayContaining(['::1', 'fe80::', '2001:db8::1', '::ffff:192.0.2.1']))
+    expect(values).not.toContain('a::b::c')
+  })
+
   it('classifies exact hash lengths and lowercases them', () => {
     const text = `${'A'.repeat(32)} ${'B'.repeat(40)} ${'C'.repeat(64)}`
     expect(entries(text, 'md5')[0]?.value).toBe('a'.repeat(32))

@@ -10,6 +10,9 @@ describe('URL encoding', () => {
     expect(encodeUrl('https://example.com/a path?q=hello world', 'full')).toBe('https://example.com/a%20path?q=hello%20world')
     expect(decodeUrl('https://example.com/a%20path?q=hello%20world', 'full')).toBe('https://example.com/a path?q=hello world')
   })
+  it('retains credentials and decodes query keys and values independently', () => {
+    expect(decodeUrl('https://alice:secret@example.test/a?x=a%26b', 'full')).toBe('https://alice:secret@example.test/a?x=a&b')
+  })
   it('rejects malformed percent escapes and invalid full URLs', () => {
     expect(() => decodeUrl('%E0%A4%A')).toThrow()
     expect(() => encodeUrl('not a URL', 'full')).toThrow()
