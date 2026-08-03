@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { toolFilter } from '../toolFilter'
-import { toolRegistry } from '../tools/registry'
+import { toolRegistry } from '../plugins'
 
 const { locale, t } = useI18n()
 const filteredTools = computed(() => {

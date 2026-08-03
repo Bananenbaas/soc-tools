@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import HomeView from './views/HomeView.vue'
-import { toolRegistry } from './tools/registry'
+import { toolRegistry } from './plugins'
+import { createToolRouteComponent } from './plugins/toolRoute'
 
 const toolRoutes: RouteRecordRaw[] = toolRegistry.map((tool) => ({
   path: tool.routePath,
   name: tool.id,
-  component: tool.component,
+  component: createToolRouteComponent(tool),
 }))
 
 export const router = createRouter({

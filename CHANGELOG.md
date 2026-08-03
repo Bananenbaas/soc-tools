@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-08-03
+
+### Added
+
+- Build-time plugin architecture. Tools and themes are now provided by plugins that are auto-discovered at build time and validated before the app initializes: a plugin manifest declares its id, version, SPDX license, targeted plugin-API version, the tools/themes it provides, and its own English/Dutch messages. The build fails fast if any plugin is invalid (duplicate id or route, missing translations, incompatible API/core version, malformed shape). The 22 existing tools are shipped as the first-party "core" plugin, so nothing changes for users — routes, ids, and behavior are identical.
+- `soc-tools.config.ts` lets a self-hoster enable or disable tools by id without patching the core; a disabled tool disappears from the catalog, navigation, and router with no dead route. Missing config enables everything (fail-safe).
+- Per-tool runtime error isolation: an error inside one tool now shows a contained message instead of taking down the whole app.
+
+### Security
+
+- Plugin validation is enforced at startup (not only in tests), so a malformed or incompatible plugin cannot ship silently.
+- The plugin message-merge is hardened against prototype pollution: `__proto__`, `constructor`, and `prototype` keys are rejected at every level, merges use null-prototype objects, and required-key checks use own-property lookups so inherited keys cannot satisfy them.
+
 ## [1.5.2] - 2026-08-03
 
 ### Security
