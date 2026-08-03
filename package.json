@@ -1,6 +1,6 @@
 {
   "name": "soc-tools",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "private": true,
   "description": "Client-side tools for security operations center analysts.",
   "license": "MIT",

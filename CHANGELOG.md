@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.2] - 2026-08-03
+
+### Security
+
+- The JavaScript Deobfuscator's QuickJS sandbox now enforces a fixed resource policy: CPU-time, memory, and stack limits are validated and clamped to safe bounds inside the sandbox and the worker instead of trusting caller-supplied values, and the worker rejects malformed or oversized requests. The normal in-app path is unchanged; this removes a way for other in-bundle code to request unbounded sandbox resources.
+
 ## [1.5.1] - 2026-08-03
 
 ### Fixed
