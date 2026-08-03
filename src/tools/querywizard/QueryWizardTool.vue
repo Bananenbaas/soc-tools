@@ -35,6 +35,7 @@ const panelHeading = ref<HTMLElement>()
 let conditionId = 0
 
 const stepNames = ['intent', 'siem', 'conditions', 'time', 'result'] as const
+const scenarioOptions: Scenario[] = ['user', 'host', 'ip', 'hash', 'blank']
 const selectedDialect = computed(() => dialects.find((item) => item.id === selectedId.value)!)
 const iocs = computed(() => extractIocValues(iocText.value))
 const hasUnsafeIdentifiers = computed(() => Boolean(dataSource.value.trim() || conditions.value.some((item) => item.field.trim()) || iocField.value.trim()))
@@ -105,6 +106,21 @@ function chooseScenario(value: Scenario) {
   if (value === 'ip') selectedId.value = 'splunk'
   if (value === 'hash') selectedId.value = 'elastic-eql'
 }
+function moveTile(event: KeyboardEvent, options: string[], current: string, select: (value: string) => void) {
+  const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End']
+  if (!keys.includes(event.key)) return
+  event.preventDefault()
+  const currentIndex = Math.max(0, options.indexOf(current))
+  const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : (currentIndex + (event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length
+  select(options[nextIndex])
+  void nextTick(() => (event.currentTarget as HTMLElement).parentElement?.querySelector<HTMLElement>(`[data-option="${options[nextIndex]}"]`)?.focus())
+}
+function moveScenario(event: KeyboardEvent) {
+  moveTile(event, scenarioOptions, scenario.value, (value) => chooseScenario(value as Scenario))
+}
+function moveDialect(event: KeyboardEvent) {
+  moveTile(event, dialects.map((dialect) => dialect.id), selectedId.value, (value) => { selectedId.value = value })
+}
 async function go(target: number) {
   if (target > step.value && !stepValid.value[step.value]) { focusFirstInvalid(); return }
   if (target > furthestStep.value + 1) return
@@ -134,7 +150,7 @@ function reset() {
 <template>
   <section class="tool-page" aria-labelledby="tool-title">
     <header class="tool-heading"><span class="category">{{ t(`categories.${tool.category}`) }}</span><h1 id="tool-title">{{ t(tool.nameKey) }}</h1><p>{{ t(tool.descriptionKey) }}</p></header>
-    <div class="io-panel">
+    <div class="wizard-shell">
       <div class="terminal-titlebar"><span class="window-marks" aria-hidden="true"><i /><i /><i /></span><span>[ query-wizard ]</span></div>
       <div class="io-strip"><span class="byte-count">{{ inputBytes }} B</span><div class="mode-switch" :aria-label="t('tools.querywizard.modeLabel')"><button type="button" :aria-pressed="mode === 'wizard'" @click="mode = 'wizard'">{{ t('tools.querywizard.modes.wizard') }}</button><button type="button" :aria-pressed="mode === 'quick'" @click="mode = 'quick'">{{ t('tools.querywizard.modes.quick') }}</button></div><button class="text-button" type="button" @click="resetOpen = true">{{ t('tools.querywizard.reset.open') }}</button></div>
       <p class="notice warning" role="note">{{ t('tools.querywizard.disclaimer') }}</p>
@@ -148,12 +164,12 @@ function reset() {
         <div class="step-panel">
           <section v-if="step === 0" aria-labelledby="step-heading">
             <h2 id="step-heading" ref="panelHeading" tabindex="-1">{{ t('tools.querywizard.headings.intent') }}</h2><p class="hint">{{ t('tools.querywizard.hints.intent') }}</p>
-            <div class="preset-grid"><button v-for="preset in (['user','host','ip','hash','blank'] as Scenario[])" :key="preset" type="button" class="preset" :aria-pressed="scenario === preset" @click="chooseScenario(preset)"><strong>{{ t(`tools.querywizard.presets.${preset}.name`) }}</strong><span>{{ t(`tools.querywizard.presets.${preset}.help`) }}</span></button></div>
+            <div class="preset-grid" role="radiogroup" :aria-label="t('tools.querywizard.headings.intent')" @keydown="moveScenario"><button v-for="(preset, index) in scenarioOptions" :key="preset" type="button" class="choice-tile" role="radio" :data-option="preset" :aria-checked="scenario === preset" :tabindex="scenario ? (scenario === preset ? 0 : -1) : (index === 0 ? 0 : -1)" @click="chooseScenario(preset)"><strong>{{ t(`tools.querywizard.presets.${preset}.name`) }}</strong><span>{{ t(`tools.querywizard.presets.${preset}.help`) }}</span></button></div>
             <p v-if="scenario && scenario !== 'blank'" class="suggestion">{{ t('tools.querywizard.suggestion') }}</p>
           </section>
           <section v-else-if="step === 1" aria-labelledby="step-heading">
             <h2 id="step-heading" ref="panelHeading" tabindex="-1">{{ t('tools.querywizard.headings.siem') }}</h2><p class="hint">{{ t('tools.querywizard.hints.siem') }}</p>
-            <div class="dialect-grid"><label v-for="dialect in dialects" :key="dialect.id"><input v-model="selectedId" type="radio" name="dialect" :value="dialect.id"><span><strong>{{ dialect.name }}</strong><small>{{ t(`tools.querywizard.dialectNotes.${dialect.id}`) }}</small></span></label></div>
+            <div class="dialect-grid" role="radiogroup" :aria-label="t('tools.querywizard.headings.siem')" @keydown="moveDialect"><button v-for="dialect in dialects" :key="dialect.id" type="button" class="choice-tile" role="radio" :data-option="dialect.id" :aria-checked="selectedId === dialect.id" :tabindex="selectedId === dialect.id ? 0 : -1" @click="selectedId = dialect.id"><strong>{{ dialect.name }}</strong><span>{{ t(`tools.querywizard.dialectNotes.${dialect.id}`) }}</span></button></div>
           </section>
           <section v-else-if="step === 2" aria-labelledby="step-heading">
             <h2 id="step-heading" ref="panelHeading" tabindex="-1">{{ t('tools.querywizard.headings.conditions') }}</h2><p class="hint">{{ t('tools.querywizard.hints.conditions') }}</p>
@@ -201,5 +217,79 @@ function reset() {
 </template>
 
 <style scoped>
-.io-strip{align-items:center;gap:.75rem}.mode-switch{display:flex;border:1px solid var(--border)}.mode-switch button,.stepper button,.preset,.edit-links button{background:transparent;border:0;color:var(--text);font:inherit}.mode-switch button{min-height:44px;padding:.45rem .85rem}.mode-switch button[aria-pressed=true]{background:var(--surface);font-weight:600}.stepper{display:grid;grid-template-columns:repeat(5,1fr);list-style:none;margin:0;padding:1rem;border-bottom:1px solid var(--border);gap:.5rem}.stepper button{align-items:center;display:flex;gap:.5rem;min-height:44px;text-align:left;width:100%}.stepper button span{align-items:center;border:1px solid var(--border);border-radius:50%;display:flex;height:1.75rem;justify-content:center;width:1.75rem}.stepper button[aria-current=step] span{background:var(--accent);border-color:var(--accent);color:var(--surface-base)}.stepper button:disabled{opacity:.55}.compact-step{display:none}.step-panel,.quick-panel{padding:1rem}.step-panel h2,.quick-panel h2{font-size:1.2rem;margin:0}.hint{color:var(--text-muted);margin:.3rem 0 1rem}.preset-grid,.dialect-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.75rem}.preset{border:1px solid var(--border);display:grid;gap:.35rem;min-height:7rem;padding:1rem;text-align:left}.preset[aria-pressed=true]{background:var(--surface);border-color:var(--border-strong)}.preset span,.dialect-grid small{color:var(--text-muted)}.suggestion{border:1px solid var(--border);padding:.75rem}.dialect-grid label{align-items:start;border:1px solid var(--border);display:flex;gap:.6rem;padding:.85rem}.dialect-grid label span{display:grid;gap:.25rem}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0}.form-grid label,.condition-row label,.single-field,.result-switcher{display:grid;gap:.3rem}.condition-row{align-items:end;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:.75rem;padding:.75rem 0}.condition-row .field-error{grid-column:1/-1}.condition-row .icon-button{min-height:44px;min-width:44px}input,select,textarea{background:var(--surface);border:1px solid var(--border);border-radius:.2rem;color:var(--text);font:inherit;min-height:44px;padding:.55rem;box-sizing:border-box;min-width:0}.data-input,textarea,pre,.byte-count{font-family:var(--font-mono)}textarea{resize:vertical}.ioc-box,.time-options{border:1px solid var(--border);margin:1rem 0;padding:1rem}.time-options{display:flex;flex-wrap:wrap;gap:1rem}.time-options label{align-items:center;display:flex;gap:.4rem;min-height:44px}.time-options input{min-height:auto}.field-error{color:var(--danger);margin:.35rem 0}.notice.warning{color:var(--warn)}.preview,.result-card,.quick-results article,details{border:1px solid var(--border);margin-top:1rem}.preview header,.result-card header{align-items:center;display:flex;justify-content:space-between;padding:.65rem .8rem}.preview h3,.result-card h3,.quick-results h3{font-size:1rem;margin:0}.preview header span{color:var(--text-muted);font-size:.85rem}.preview pre,.result-card pre,.quick-results pre,details pre{background:var(--surface);border-top:1px solid var(--border);margin:0;overflow:auto;padding:1rem;white-space:pre-wrap;word-break:break-word}.primary-button,.danger-button,.text-button,.icon-button,.edit-links button,summary{min-height:44px}.primary-button{background:var(--accent);border:1px solid var(--accent);border-radius:.2rem;color:var(--surface-base);font:inherit;padding:.5rem 1rem}.danger-button{background:transparent;border:1px solid var(--danger);color:var(--danger);padding:.5rem 1rem}.wizard-nav{align-items:center;border-top:1px solid var(--border);display:flex;gap:1rem;justify-content:space-between;padding:1rem}.wizard-nav p{color:var(--danger);margin:0}.result-switcher{max-width:25rem}.sr-status{min-height:1.4em;padding:0 .8rem}.edit-links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}.edit-links button{text-decoration:underline}.quick-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.quick-results article{min-width:0}.quick-results h3{padding:.65rem .8rem}details{padding:.8rem}details pre{border:1px solid var(--border)}summary{cursor:pointer}.reset-confirm{align-items:center;background:color-mix(in srgb,var(--surface-base) 88%,transparent);display:flex;inset:0;justify-content:center;position:fixed;z-index:20}.reset-confirm>div{background:var(--surface-raised);border:1px solid var(--border);max-width:28rem;padding:1.25rem}.reset-confirm>div>div{display:flex;gap:.75rem;justify-content:flex-end}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,pre:focus-visible,h2:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.step-panel>section{animation:step-in 170ms ease-out}@keyframes step-in{from{opacity:.65}to{opacity:1}}@media(prefers-reduced-motion:reduce){.step-panel>section{animation:none}}@media(max-width:1024px){.quick-results{grid-template-columns:1fr}}@media(max-width:768px){.stepper{grid-template-columns:repeat(3,1fr)}.condition-row{grid-template-columns:1fr 1fr}.condition-row .icon-button{justify-self:start}.condition-row .field-error{grid-column:1/-1}}@media(max-width:560px){.stepper{display:none}.compact-step{display:block;border-bottom:1px solid var(--border);margin:0;padding:1rem}.form-grid,.condition-row{grid-template-columns:1fr}.condition-row .field-error{grid-column:auto}.wizard-nav{align-items:stretch;flex-direction:column}.wizard-nav .primary-button{order:2}.preset-grid,.dialect-grid{grid-template-columns:1fr}}
+.wizard-shell{margin-top:24px;overflow:hidden;border:1px solid var(--border-hairline);border-radius:8px;background:var(--surface-raised);color:var(--text-primary)}
+.terminal-titlebar{background:var(--io-strip);color:var(--text-secondary)}
+.io-strip{align-items:center;gap:12px;background:var(--surface-overlay);color:var(--text-primary)}
+.mode-switch{display:flex;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden}
+.mode-switch button,.stepper button,.edit-links button{border:0;background:transparent;color:var(--text-primary);font:inherit;cursor:pointer}
+.mode-switch button{min-height:44px;padding:8px 14px}
+.mode-switch button+button{border-left:1px solid var(--border-strong)}
+.mode-switch button[aria-pressed=true]{background:var(--accent-muted);color:var(--accent-strong);font-weight:650}
+.notice{max-width:960px;margin:8px auto}
+.stepper{display:grid;max-width:960px;margin:0 auto;padding:16px 24px;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;list-style:none;border-bottom:1px solid var(--border-hairline)}
+.stepper button{display:flex;width:100%;min-height:44px;align-items:center;gap:8px;text-align:left;color:var(--text-secondary)}
+.stepper button span{display:flex;width:28px;height:28px;flex:none;align-items:center;justify-content:center;border:1px solid var(--border-strong);border-radius:50%;color:var(--text-secondary)}
+.stepper button[aria-current=step]{color:var(--text-primary);font-weight:650}
+.stepper button[aria-current=step] span{border-color:var(--accent);background:var(--accent-muted);color:var(--accent-strong)}
+.stepper button:not(:disabled):not([aria-current=step]){color:var(--accent)}
+.stepper button:not(:disabled):not([aria-current=step]) span{border-color:var(--accent);color:var(--accent)}
+.stepper button:disabled{cursor:not-allowed;color:var(--text-muted);opacity:.72}
+.compact-step{display:none}
+.step-panel,.quick-panel{width:min(100%,960px);margin:0 auto;padding:24px}
+.step-panel h2,.quick-panel h2{margin:0;color:var(--text-primary);font-size:1.25rem}
+.hint{margin:4px 0 16px;color:var(--text-muted)}
+.preset-grid,.dialect-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.choice-tile{display:grid;min-height:116px;align-content:start;gap:6px;padding:16px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface-overlay);color:var(--text-primary);font:inherit;text-align:left;cursor:pointer}
+.choice-tile span{color:var(--text-muted);font-size:.875rem;line-height:1.45}
+.choice-tile:hover{border-color:var(--accent);background:color-mix(in srgb,var(--surface-overlay) 82%,var(--surface-raised))}
+.choice-tile[aria-checked=true]{border-color:var(--accent);background:var(--accent-muted)}
+.choice-tile[aria-checked=true] strong{color:var(--accent-strong)}
+.suggestion{margin:16px 0 0;padding:12px;border:1px solid var(--border-hairline);border-radius:6px;background:var(--surface-overlay);color:var(--text-secondary)}
+.form-grid{display:grid;margin:16px 0;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form-grid label,.condition-row label,.single-field,.result-switcher{display:grid;gap:6px;color:var(--text-secondary);font-weight:600}
+.condition-row{display:grid;padding:12px 0;grid-template-columns:1fr 1fr 2fr auto;align-items:end;gap:12px;border-top:1px solid var(--border-hairline)}
+.condition-row .field-error{grid-column:1/-1}
+.condition-row .icon-button{min-width:44px;min-height:44px}
+input:not([type=radio]):not([type=checkbox]),select,textarea{box-sizing:border-box;min-width:0;min-height:44px;padding:9px 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface-overlay);color:var(--text-primary);font:inherit}
+.data-input,textarea,pre,.byte-count{font-family:var(--font-data)}
+textarea{resize:vertical}
+input:not([type=radio]):not([type=checkbox]):focus-visible,select:focus-visible,textarea:focus-visible{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:2px}
+.ioc-box,.time-options{margin:16px 0;padding:16px;border:1px solid var(--border-hairline);border-radius:6px;background:var(--surface-base)}
+.ioc-box legend,.time-options legend{padding:0 6px;color:var(--text-primary);font-weight:650}
+.ioc-box .form-grid{margin:0}
+.ioc-box>p{margin:8px 0 0;color:var(--text-muted);font-family:var(--font-data)}
+.time-options{display:flex;flex-wrap:wrap;gap:16px}
+.time-options label{display:flex;min-height:44px;align-items:center;gap:8px;color:var(--text-secondary);cursor:pointer}
+.time-options input{width:18px;height:18px;accent-color:var(--accent)}
+.field-error{margin:6px 0;color:var(--danger)}
+.notice.warning{color:var(--warn)}
+.preview,.result-card,.quick-results article,details{margin-top:16px;border:1px solid var(--border-hairline);border-radius:6px;background:var(--surface-raised)}
+.preview header,.result-card header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px}
+.preview h3,.result-card h3,.quick-results h3{margin:0;color:var(--text-primary);font-size:1rem}
+.preview header span{color:var(--text-muted);font-size:.85rem}
+.preview pre,.result-card pre,.quick-results pre,details pre{margin:0;padding:16px;overflow:auto;border-top:1px solid var(--io-border);background:var(--io-well);color:var(--accent);font-family:var(--font-data);white-space:pre-wrap;word-break:break-word}
+.primary-button,.danger-button,.text-button,.icon-button,.edit-links button,summary{min-height:44px}
+.primary-button{padding:8px 16px;border:1px solid var(--accent);border-radius:6px;background:var(--accent);color:var(--surface-raised);font:inherit;cursor:pointer}
+.primary-button:disabled{cursor:not-allowed;opacity:.55}
+.danger-button{padding:8px 16px;border:1px solid var(--danger);border-radius:6px;background:transparent;color:var(--danger)}
+.wizard-nav{display:flex;max-width:960px;margin:0 auto;padding:16px 24px;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--border-hairline)}
+.wizard-nav p{margin:0;color:var(--danger)}
+.result-switcher{max-width:25rem}
+.sr-status{min-height:1.4em;padding:0 12px}
+.edit-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.edit-links button{color:var(--accent);text-decoration:underline}
+.quick-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.quick-results article{min-width:0}
+.quick-results h3{padding:10px 12px}
+details{padding:12px;color:var(--text-secondary)}
+details pre{border:1px solid var(--io-border)}
+summary{cursor:pointer;color:var(--text-primary)}
+.reset-confirm{position:fixed;z-index:20;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--surface-base) 88%,transparent)}
+.reset-confirm>div{max-width:28rem;padding:20px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface-raised)}
+.reset-confirm>div>div{display:flex;justify-content:flex-end;gap:12px}
+button:focus-visible,pre:focus-visible,h2:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){.step-panel>section{animation:step-in 170ms ease-out}@keyframes step-in{from{opacity:.65;transform:translateY(3px)}to{opacity:1;transform:none}}}
+@media(max-width:1024px){.preset-grid,.dialect-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-results{grid-template-columns:1fr}}
+@media(max-width:768px){.stepper{padding-inline:16px;grid-template-columns:repeat(5,auto)}.stepper button{justify-content:center}.stepper button:not([aria-current=step]){font-size:0}.condition-row{grid-template-columns:1fr 1fr}.condition-row .icon-button{justify-self:start}.condition-row .field-error{grid-column:1/-1}.step-panel,.quick-panel{padding:20px 16px}}
+@media(max-width:560px){.stepper{display:none}.compact-step{display:block;margin:0;padding:12px 16px;border-bottom:1px solid var(--border-hairline);color:var(--text-secondary)}.form-grid,.condition-row,.preset-grid,.dialect-grid{grid-template-columns:1fr}.condition-row .field-error{grid-column:auto}.wizard-nav{align-items:stretch;flex-direction:column;padding-inline:16px}.wizard-nav .primary-button{order:2}.choice-tile{min-height:104px}}
 </style>

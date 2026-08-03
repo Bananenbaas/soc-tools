@@ -20,6 +20,7 @@ const textSize = ref(Number.parseInt(document.documentElement.dataset.textSize ?
 const drawerOpen = ref(false)
 const controlsOpen = ref(false)
 const searchOpen = ref(false)
+const version = __APP_VERSION__
 const filteredTools = computed(() => {
   const query = toolFilter.value.trim().toLocaleLowerCase(locale.value)
   return query
@@ -140,8 +141,12 @@ function setThemeName(event: Event) {
         </section>
         <p v-if="!filteredTools.length" class="rail-empty">{{ t('home.noResults') }}</p>
       </nav>
-      <p class="rail-note">{{ t('app.localOnly') }}</p>
+      <div class="rail-note"><p>{{ t('app.localOnly') }}</p><p class="rail-version">v{{ version }}</p></div>
     </aside>
     <main id="main-content" class="workspace" tabindex="-1"><RouterView /></main>
   </div>
 </template>
+
+<style scoped>
+.rail-note p{margin:0}.rail-version{margin-top:.25rem!important;color:var(--text-muted);font-family:var(--font-data);font-size:.75rem}
+</style>

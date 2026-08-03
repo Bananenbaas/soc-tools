@@ -10,7 +10,10 @@ export default tseslint.config(
   ...vue.configs['flat/recommended'],
   {
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        __APP_VERSION__: 'readonly',
+      },
     },
     rules: {
       'vue/html-self-closing': 'off',

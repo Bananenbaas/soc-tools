@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-08-03
+
+### Fixed
+
+- Tool form controls (inputs, selects, textareas) were referencing CSS custom properties that were never defined, so their backgrounds and borders were dropped and the fields could be nearly invisible — worst in the Terminal theme. The aliases are now defined against real theme tokens, so every tool's fields render clearly in all four themes and both light and dark modes. Native `<select>` dropdowns are now legible in every theme.
+- The Terminal theme no longer keeps a dark editor well in light mode; its light mode now uses light panels like the other themes, so every tool looks right in Terminal light.
+- The SIEM Query Wizard now renders its form on normal themed surfaces instead of the dark I/O well (which was unreadable in light mode), with the intent scenarios and SIEM dialects shown as clearly-bordered, selectable tiles, tidier spacing, and a centered working column.
+
+### Added
+
+- The running application version is shown in the sidebar, under the local-processing note.
+
 ## [1.5.0] - 2026-08-03
 
 ### Changed
