@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-08-03
+
+### Changed
+
+- SIEM Query Wizard redesigned into a genuine guided, step-by-step flow: choose an intent scenario, pick one target dialect, build conditions with a live preview, set a time window, and land on a result screen showing the query for the chosen dialect with a quick dialect switcher, Sigma/Wazuh skeletons in an expander, and jump-back "edit" actions. A `Wizard | Snel` toggle keeps a fast one-step scratchpad for pasting an IOC list or a single field/value. Navigation is non-linear (completed steps stay editable), each step validates with an inline reason, absolute time ranges are checked, and the last-used dialect is remembered locally. The query-generation logic is unchanged; honest limitations (grep/Sigma/Wazuh drop parts of the spec; nothing connects or runs) are stated throughout.
+
 ## [1.4.0] - 2026-08-01
 
 ### Added
