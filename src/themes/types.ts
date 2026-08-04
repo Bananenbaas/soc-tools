@@ -12,6 +12,12 @@ export const themeTokenNames = [
   'accent-muted',
   'warn',
   'danger',
+  'io-well',
+  'io-panel',
+  'io-strip',
+  'io-border',
+  'terminal-editor-text',
+  'terminal-editor-placeholder',
 ] as const
 
 export type ThemeTokenName = (typeof themeTokenNames)[number]

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-08-04
+
+### Added
+
+- Themes are now fully first-class plugin content, on par with tools: a plugin can provide a complete theme (its light and dark token records), and the theme's CSS is generated from those records at build time and shipped as a normal self-hosted stylesheet — so a plugin theme actually renders without hand-editing the global styles. The plugin authoring guide (`docs/PLUGINS.md`) documents this, and `examples/example-plugin/` illustrates a plugin that provides both a tool and a theme.
+
+### Changed
+
+- The four built-in themes (Terminal, Slate, Frost, High contrast) are now generated from their plugin theme definitions instead of hand-written CSS blocks, with an automated test asserting the generated CSS is byte-for-byte identical to the previous values — so the existing themes are visually unchanged. The Content-Security-Policy is unchanged (the theme-name allowlist in the boot script is derived from the registered themes, with its hash updated accordingly).
+
 ## [1.7.1] - 2026-08-04
 
 ### Added

@@ -82,7 +82,7 @@ Vercel does not read `_headers`. Configure both headers and the SPA rewrite in
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self' 'sha256-+oaPpmEiVxNR8PMqJKkpbmIIpqPo7W+iDc6E6/Q2gT4=' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" },
+        { "key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self' 'sha256-uTTN9JrIDijpYD/6ODRFwNi51TVG60MiU47E29y9+/Q=' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "no-referrer" },
