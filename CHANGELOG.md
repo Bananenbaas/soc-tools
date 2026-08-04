@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-08-04
+
+### Added
+
+- The sidebar tool categories are now collapsible: each category header is a keyboard-accessible disclosure with a chevron, its expanded/collapsed state is remembered across visits, the category containing the active tool stays expanded, and filtering temporarily expands the categories that have matches. This keeps the navigation manageable as the tool set grows.
+
 ## [1.7.0] - 2026-08-03
 
 ### Added

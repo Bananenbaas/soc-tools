@@ -12,6 +12,7 @@ const messages = {
       drawerToggle: 'Toggle tool navigation', localOnly: 'Processing stays in this browser.',
       footer: 'Use responsibly. Do not process sensitive or classified data without authorization.',
       licenses: 'Licenses / Open source',
+      collapseCategory: 'Collapse {category}', expandCategory: 'Expand {category}',
     },
     home: {
       title: 'Tools for SOC analysts', intro: 'Focused utilities that process data locally in your browser.',
@@ -34,6 +35,7 @@ const messages = {
       drawerToggle: 'Toolnavigatie openen of sluiten', localOnly: 'Verwerking blijft in deze browser.',
       footer: 'Gebruik verantwoord. Verwerk geen gevoelige of gerubriceerde gegevens zonder toestemming.',
       licenses: 'Licenties / Open source',
+      collapseCategory: 'Klap {category} in', expandCategory: 'Klap {category} uit',
     },
     home: {
       title: 'Tools voor SOC-analisten', intro: 'Gerichte hulpmiddelen die gegevens lokaal in je browser verwerken.',

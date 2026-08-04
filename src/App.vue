@@ -20,6 +20,7 @@ const textSize = ref(Number.parseInt(document.documentElement.dataset.textSize ?
 const drawerOpen = ref(false)
 const controlsOpen = ref(false)
 const searchOpen = ref(false)
+const railCollapsedGroups = ref<string[]>(loadCollapsedRailGroups())
 const version = __APP_VERSION__
 const filteredTools = computed(() => {
   const query = toolFilter.value.trim().toLocaleLowerCase(locale.value)
@@ -36,6 +37,8 @@ const groupedTools = computed(() => {
   }
   return [...groups.entries()]
 })
+const activeCategory = computed(() => toolRegistry.find((tool) => tool.routePath === route.path)?.category)
+const filterActive = computed(() => toolFilter.value.trim().length > 0)
 
 watch(explicitThemeMode, (value) => {
   if (!value) return
@@ -54,6 +57,8 @@ watch(() => route.fullPath, () => {
   controlsOpen.value = false
   searchOpen.value = false
 })
+
+watch(() => route.path, expandActiveRailGroup, { immediate: true })
 
 function updateSystemTheme(event: MediaQueryListEvent) {
   systemThemeMode.value = event.matches ? 'dark' : 'light'
@@ -81,6 +86,39 @@ function setLocale(event: Event) {
 
 function setThemeName(event: Event) {
   themeName.value = (event.target as HTMLSelectElement).value
+}
+
+function loadCollapsedRailGroups(): string[] {
+  try {
+    const saved = JSON.parse(localStorage.getItem('soc-tools-rail-collapsed') ?? '[]')
+    return Array.isArray(saved) && saved.every((category): category is string => typeof category === 'string') ? saved : []
+  } catch {
+    return []
+  }
+}
+
+function saveCollapsedRailGroups() {
+  localStorage.setItem('soc-tools-rail-collapsed', JSON.stringify(railCollapsedGroups.value))
+}
+
+function expandActiveRailGroup() {
+  const category = activeCategory.value
+  if (!category || !railCollapsedGroups.value.includes(category)) return
+  railCollapsedGroups.value = railCollapsedGroups.value.filter((candidate) => candidate !== category)
+  saveCollapsedRailGroups()
+}
+
+function isRailGroupExpanded(category: string) {
+  return filterActive.value || activeCategory.value === category || !railCollapsedGroups.value.includes(category)
+}
+
+function toggleRailGroup(category: string) {
+  if (activeCategory.value === category) return
+  const collapsed = railCollapsedGroups.value.includes(category)
+  railCollapsedGroups.value = collapsed
+    ? railCollapsedGroups.value.filter((candidate) => candidate !== category)
+    : [...railCollapsedGroups.value, category]
+  saveCollapsedRailGroups()
 }
 </script>
 
@@ -133,11 +171,33 @@ function setThemeName(event: Event) {
     <aside class="tool-rail" :class="{ open: drawerOpen }" :aria-label="t('app.tools')">
       <nav>
         <section v-for="[category, tools] in groupedTools" :key="category" class="rail-group">
-          <h2>{{ t(`categories.${category}`) }}</h2>
-          <RouterLink v-for="tool in tools" :key="tool.id" class="rail-item" :to="tool.routePath">
-            <svg v-if="tool.icon" aria-hidden="true" :viewBox="tool.icon.viewBox"><path v-for="path in tool.icon.paths" :key="path" :d="path" /></svg>
-            <span>{{ t(tool.nameKey) }}</span>
-          </RouterLink>
+          <h2>
+            <button
+              class="rail-group-toggle"
+              type="button"
+              :aria-label="t(`app.${isRailGroupExpanded(category) ? 'collapse' : 'expand'}Category`, { category: t(`categories.${category}`) })"
+              :aria-expanded="isRailGroupExpanded(category)"
+              :aria-controls="`rail-group-${category}`"
+              @click="toggleRailGroup(category)"
+            >
+              <span>{{ t(`categories.${category}`) }}</span>
+              <span class="rail-group-chevron" aria-hidden="true">›</span>
+            </button>
+          </h2>
+          <div
+            :id="`rail-group-${category}`"
+            class="rail-group-tools"
+            :class="{ collapsed: !isRailGroupExpanded(category) }"
+            :aria-hidden="!isRailGroupExpanded(category)"
+            :inert="!isRailGroupExpanded(category)"
+          >
+            <div class="rail-group-tools-inner">
+              <RouterLink v-for="tool in tools" :key="tool.id" class="rail-item" :to="tool.routePath">
+                <svg v-if="tool.icon" aria-hidden="true" :viewBox="tool.icon.viewBox"><path v-for="path in tool.icon.paths" :key="path" :d="path" /></svg>
+                <span>{{ t(tool.nameKey) }}</span>
+              </RouterLink>
+            </div>
+          </div>
         </section>
         <p v-if="!filteredTools.length" class="rail-empty">{{ t('home.noResults') }}</p>
       </nav>
