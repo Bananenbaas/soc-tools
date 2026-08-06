@@ -31,7 +31,7 @@
     "@vitejs/plugin-vue": "^6.0.0",
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "happy-dom": "^20.11.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.9.0",
