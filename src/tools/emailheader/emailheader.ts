@@ -65,7 +65,7 @@ function decodeBytes(encoded: string, encoding: string): Uint8Array | undefined 
 function decodeWord(charset: string, encoding: string, encoded: string, original: string): string {
   const bytes = decodeBytes(encoded, encoding)
   if (!bytes) return original
-  const normalized = charset.toLowerCase().replace(/^us-ascii$/u, 'ascii').replace(/^iso-8859-1$/u, 'iso-8859-1')
+  const normalized = charset.toLowerCase().replace(/^us-ascii$/u, 'ascii')
   if (!['utf-8', 'utf8', 'ascii', 'iso-8859-1'].includes(normalized)) return original
   try { return new TextDecoder(normalized === 'utf8' ? 'utf-8' : normalized, { fatal: true }).decode(bytes) } catch { return original }
 }

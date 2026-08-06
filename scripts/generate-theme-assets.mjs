@@ -24,7 +24,7 @@ try {
   if (updatedIndex === index && !index.includes(`${themeNames}.includes(n||""`) && !index.includes('a.includes(n||""')) throw new Error('Theme-name bootstrap placeholder was not found')
   await writeFile(indexPath, updatedIndex)
 
-  const script = updatedIndex.match(/<script>([\s\S]*?)<\/script>/u)?.[1]
+  const script = updatedIndex.match(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/iu)?.[1]
   if (!script) throw new Error('Theme bootstrap script was not found')
   const hash = createHash('sha256').update(script).digest('base64')
   for (const relativePath of ['public/_headers', 'deploy/nginx-headers.conf']) {

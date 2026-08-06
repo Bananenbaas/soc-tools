@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.2] - 2026-08-06
+
+### Fixed
+
+- Removed a no-op string replacement in the Email Header Parser's MIME encoded-word decoding (it replaced `iso-8859-1` with itself); charset decoding is unchanged. Resolves a CodeQL `js/identity-replacement` alert.
+- Made the build-time `<script>` extraction in the theme-asset generator (used only to hash our own inline bootstrap for the CSP) tolerant of tag casing, attributes, and whitespace. The computed CSP hash is unchanged. Resolves a CodeQL `js/bad-tag-filter` alert (a false positive here, since the script parses only our own controlled `index.html`, but hardened anyway).
+
 ## [1.8.1] - 2026-08-06
 
 ### Fixed
