@@ -5,6 +5,10 @@ on:
     branches: [main]
     tags: ["v*"]
 
+concurrency:
+  group: ghcr-publish
+  cancel-in-progress: false
+
 permissions: {}
 
 jobs:
