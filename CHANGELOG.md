@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-08-06
+
+### Fixed
+
+- The theme and language pickers in the top bar are now readable in the dark themes: their native dropdown option lists used a transparent (white) background under the themes' light text, making the options unreadable. The controls and their option lists now use a solid themed background.
+- The I/O editor text (tool input and output) is now readable in every theme's light mode. The Terminal theme still forced light editor text — a leftover from when it kept a dark editor well in light mode — which was unreadable on the now-light editor surface; the editor now simply follows the theme's primary text color in all themes and modes.
+
 ## [1.8.0] - 2026-08-04
 
 ### Added

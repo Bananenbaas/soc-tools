@@ -16,8 +16,6 @@ export const themeTokenNames = [
   'io-panel',
   'io-strip',
   'io-border',
-  'terminal-editor-text',
-  'terminal-editor-placeholder',
 ] as const
 
 export type ThemeTokenName = (typeof themeTokenNames)[number]
