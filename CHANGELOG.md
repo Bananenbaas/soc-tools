@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.3] - 2026-08-07
+
+### Added
+
+- Evidence Timeline Builder: reconstruct an intrusion timeline from evidence for DFIR triage and the HTB CDSA exam. Paste raw log lines (Unix/ms, Windows FILETIME, ISO-8601, syslog, web-access-log, shell-history timestamps) and they are normalised to UTC and Europe/Amsterdam, sorted, de-duplicated, and shown with per-entry deltas and a total duration; a Notes tab adds manual observations stamped now; a Flags & answers tab tracks exam answers. Entries are tagged with MITRE ATT&CK tactics (filter and group by tactic), carry a host/target, and surface extracted indicators plus a de-duplicated indicator list. Export as CSV, JSON, or Markdown (and flags as CSV/Markdown checklist), and save/load the whole workspace as a local JSON file. Fully client-side; times are best-effort normalised and no verdict is given.
+
 ## [1.8.2] - 2026-08-06
 
 ### Fixed

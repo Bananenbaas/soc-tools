@@ -164,6 +164,12 @@ export const coreToolDefinitions = [
     icon: { viewBox: '0 0 24 24', paths: ['M6 3h9l4 4v14H6z', 'M15 3v5h4', 'M9 12h7', 'M9 16h7'] },
   },
   {
+    id: 'soc-tools.evidencetimeline', nameKey: 'tools.evidencetimeline.name', descriptionKey: 'tools.evidencetimeline.description',
+    category: 'dfir', routePath: '/tools/evidence-timeline', component: () => import('./evidencetimeline/EvidenceTimelineTool.vue'),
+    recommendedMaxInputBytes: 1_048_576,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 6h16', 'M4 12h16', 'M4 18h16', 'M7 4v4', 'M12 10v4', 'M17 16v4', 'M18 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'] },
+  },
+  {
     id: 'soc-tools.cmdline', nameKey: 'tools.cmdline.name', descriptionKey: 'tools.cmdline.description',
     category: 'windows', routePath: '/tools/windows-cmdline', component: () => import('./cmdline/CmdLineTool.vue'),
     recommendedMaxInputBytes: 256_000,

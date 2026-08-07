@@ -9,7 +9,7 @@ describe('discovered plugins', () => {
   })
 
   it('discover all 22 core tools', () => {
-    expect(discoveredPlugins.flatMap((plugin) => plugin.provides.tools ?? [])).toHaveLength(22)
+    expect(discoveredPlugins.flatMap((plugin) => plugin.provides.tools ?? [])).toHaveLength(23)
   })
 
   it('rejects a malformed plugin before runtime registries can be built', () => {
