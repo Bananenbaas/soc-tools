@@ -38,4 +38,8 @@ describe('generated theme CSS', () => {
     expect(themeTokenDeclarations(coreThemeDefinitions[0].tokens.dark)).toContain('--io-well:#000307')
     expect(themeTokenDeclarations(coreThemeDefinitions[0].tokens.dark)).not.toMatch(/terminal-editor-/)
   })
+
+  it('rejects hostile theme ids before selector interpolation', () => {
+    expect(() => themeCss([{ ...coreThemeDefinitions[0], id: 'evil"]' }])).toThrow('Unsafe theme id')
+  })
 })

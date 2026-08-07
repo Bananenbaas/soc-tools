@@ -19,7 +19,7 @@ Tools use a two-part lowercase ID such as `example.decoder`, a route beginning w
 
 ## Providing a theme
 
-A plugin can provide a theme alongside its tools. A `ThemeDefinition` has a stable `id`, a translation `nameKey`, and complete `tokens.dark` and `tokens.light` records. Every record must include `surface-base`, `surface-raised`, `surface-overlay`, `border-hairline`, `border-strong`, `text-primary`, `text-secondary`, `text-muted`, `accent`, `accent-strong`, `accent-muted`, `warn`, `danger`, `io-well`, `io-panel`, `io-strip`, `io-border`, `terminal-editor-text`, and `terminal-editor-placeholder`; each value is a hex color.
+A plugin can provide a theme alongside its tools. A `ThemeDefinition` has a stable `id`, a translation `nameKey`, and complete `tokens.dark` and `tokens.light` records. Every record must include `surface-base`, `surface-raised`, `surface-overlay`, `border-hairline`, `border-strong`, `text-primary`, `text-secondary`, `text-muted`, `accent`, `accent-strong`, `accent-muted`, `warn`, `danger`, `io-well`, `io-panel`, `io-strip`, and `io-border`; each value is a hex color.
 
 Theme CSS is generated during the build from the registered `ThemeDefinition` records. The generated self-hosted stylesheet contains dark, explicit light, and system-preferred-light selectors for every theme. Do not add theme selectors or color values to `src/styles.css`; the definition is the source of truth.
 

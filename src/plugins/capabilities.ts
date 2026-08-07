@@ -6,10 +6,15 @@ export const capabilityCspRequirements = {
   wasm: { directive: 'script-src', token: "'wasm-unsafe-eval'" },
 } as const satisfies Readonly<Record<PluginCapability, { directive: string; token: string }>>
 
+export const knownCapabilities = new Set<string>(Object.keys(capabilityCspRequirements))
+
 export const evalLikeCspTokens = new Set(["'unsafe-eval'", "'wasm-unsafe-eval'"])
 
 export function requiredCapabilityCspTokens(plugins: readonly PluginManifest[]): ReadonlySet<string> {
-  return new Set(plugins.flatMap((plugin) => (plugin.capabilities ?? []).map((capability) => capabilityCspRequirements[capability].token)))
+  return new Set(plugins.flatMap((plugin) => (plugin.capabilities ?? []).flatMap((capability) => {
+    const requirement = capabilityCspRequirements[capability as PluginCapability]
+    return requirement ? [requirement.token] : []
+  })))
 }
 
 export function shippedEvalLikeCspTokens(policy: string): ReadonlySet<string> {

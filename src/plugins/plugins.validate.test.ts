@@ -42,7 +42,7 @@ describe('discovered plugins', () => {
       ['core too old', { ...base, minCoreVersion: '99.0.0' }, 'requires core >= 99.0.0'],
       ['malformed tool id', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], id: 'not-valid' }] } }, 'id must match'],
       ['duplicate tool id', { ...base, provides: { ...base.provides, tools: [base.provides.tools?.[0], base.provides.tools?.[0]] } }, 'Duplicate tool id'],
-      ['malformed route', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], routePath: 'tools/no-leading-slash' }] } }, 'routePath must start with /'],
+      ['malformed route', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], routePath: 'tools/no-leading-slash' }] } }, 'routePath must match'],
       ['missing English tool message', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], id: 'fixture.missing-en' }] }, messages: { en: {}, nl: base.messages.nl } }, 'missing en tool name'],
       ['missing Dutch tool message', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], id: 'fixture.missing-nl' }] }, messages: { en: base.messages.en, nl: {} } }, 'missing nl tool name'],
       ['invalid icon', { ...base, provides: { ...base.provides, tools: [{ ...base.provides.tools?.[0], icon: { viewBox: '', paths: [] } }] } }, 'icon requires a viewBox'],
@@ -61,5 +61,27 @@ describe('discovered plugins', () => {
       messages: { en: {}, nl: {} }, capabilities: ['wasm'] as const,
     }
     expect(validatePlugins([valid], packageJson.version)).toEqual([])
+  })
+
+  it('uses declared tool keys and rejects manifest collisions and unsafe declarations', () => {
+    const base = discoveredPlugins[0]
+    const tool = { ...base.provides.tools?.[0], nameKey: 'tools.base64.actualName', descriptionKey: 'tools.base64.actualDescription' }
+    const baseEn = base.messages.en as Record<string, unknown>
+    const baseNl = base.messages.nl as Record<string, unknown>
+    const baseEnTools = baseEn.tools as Record<string, unknown>
+    const baseNlTools = baseNl.tools as Record<string, unknown>
+    const baseEnBase64 = baseEnTools.base64 as Record<string, unknown>
+    const baseNlBase64 = baseNlTools.base64 as Record<string, unknown>
+    const messages = {
+      en: { ...baseEn, tools: { ...baseEnTools, base64: { ...baseEnBase64, actualName: 'Name', actualDescription: 'Description' } } },
+      nl: { ...baseNl, tools: { ...baseNlTools, base64: { ...baseNlBase64, actualName: 'Naam', actualDescription: 'Beschrijving' } } },
+    }
+    expect(validatePlugins([{ ...base, messages, provides: { ...base.provides, tools: [tool] } }] as never, packageJson.version)).toEqual([])
+
+    expect(validatePlugins([{ ...base, capabilities: ['unknown'] }] as never, packageJson.version).some((item) => item.includes('capabilities must contain only known capabilities'))).toBe(true)
+    expect(validatePlugins([{ ...base, provides: { ...base.provides, themes: [{ ...base.provides.themes?.[0], id: 'evil"]' }] } }] as never, packageJson.version).some((item) => item.includes('theme id'))).toBe(true)
+    expect(validatePlugins([{ ...base, messages: { en: { app: { injected: 'x' } }, nl: {} } }] as never, packageJson.version).some((item) => item.includes('reserved'))).toBe(true)
+    const duplicateMessages = { ...base, id: 'fixture.other', provides: { tools: [], themes: [] }, messages: { en: { tools: { base64: { name: 'duplicate' } } }, nl: {} } }
+    expect(validatePlugins([base, duplicateMessages] as never, packageJson.version).some((item) => item.includes('collides'))).toBe(true)
   })
 })

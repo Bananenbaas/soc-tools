@@ -1,6 +1,6 @@
 import type { ThemeDefinition } from '../themes/types'
 import type { ToolDefinition } from '../tools/types'
-import { validateConfig, type SocToolsConfig } from './config'
+import { readConfig, type SocToolsConfig } from './config'
 import type { PluginManifest } from './types'
 import { createMessageTree, mergeMessageTrees } from './merge'
 import { guardUniqueTools, validatePlugins } from './validate'
@@ -30,8 +30,7 @@ export const discoveredPlugins = Object.entries(modules)
 const pluginViolations = validatePlugins(discoveredPlugins, __APP_VERSION__)
 if (pluginViolations.length > 0) throw new Error(`Invalid plugin configuration:\n${pluginViolations.map((violation) => `- ${violation}`).join('\n')}`)
 guardUniqueTools(discoveredPlugins)
-validateConfig(config)
-const pluginConfig: SocToolsConfig = config
+const pluginConfig: SocToolsConfig = readConfig(config)
 
 const allTools = discoveredPlugins.flatMap((plugin) => plugin.provides.tools ?? [])
 const knownToolIds = new Set(allTools.map((tool) => tool.id))

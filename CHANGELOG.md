@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.4] - 2026-08-07
+
+### Security
+
+- Hardened the build-time plugin contract so an invalid or hostile plugin is rejected before it can ship. Plugin validation now checks each tool's declared name/description translation keys resolve in both locales, validates plugin and theme ids (grammar and uniqueness), tool routes (shape, and no collision with reserved app routes), and capabilities (must be known — an unknown capability is a validation error, not a runtime crash); a plugin can no longer overwrite core or another plugin's translation keys, and theme ids are constrained so they cannot inject CSS into the generated stylesheet. Plugin configuration is read with own-property checks only, so an inherited enable/disable list cannot silently take effect.
+
+### Fixed
+
+- Added a build-time i18n coverage test that fails if any translation key a tool uses (including dynamic ones like modes/tactics) is missing in English or Dutch, preventing untranslated keys from reaching the UI. Corrected the plugin authoring guide to the actual theme token contract.
+
 ## [1.8.3] - 2026-08-07
 
 ### Added
