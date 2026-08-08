@@ -1,0 +1,39 @@
+name: Update ATT&CK technique catalog
+
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Generate catalog
+        run: node scripts/generate-mitre-catalog.mjs
+      - name: Open catalog update pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- src/tools/mitre/attack-catalog.ts; then
+            echo 'The ATT&CK catalog is already current.'
+            exit 0
+          fi
+          added=$(git diff --numstat -- src/tools/mitre/attack-catalog.ts | awk '{print $1}')
+          removed=$(git diff --numstat -- src/tools/mitre/attack-catalog.ts | awk '{print $2}')
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B chore/attack-catalog-refresh
+          git add src/tools/mitre/attack-catalog.ts
+          git commit -m 'Update ATT&CK technique catalog'
+          git push --force-with-lease origin chore/attack-catalog-refresh
+          gh pr create --base main --head chore/attack-catalog-refresh --title 'Update ATT&CK technique catalog' --body "Refresh the bundled Enterprise ATT&CK technique catalog from the official MITRE STIX data.\n\nCatalog file diff: ${added} added line(s), ${removed} removed line(s)."

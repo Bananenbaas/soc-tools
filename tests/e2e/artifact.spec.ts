@@ -25,7 +25,7 @@ test('all deployment CSP examples use the generated theme bootstrap hash', async
     readFile(resolve(projectRoot, 'public/_headers'), 'utf8'),
     readFile(resolve(projectRoot, 'deploy/nginx-headers.conf'), 'utf8'),
   ])
-  const script = indexHtml.match(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/iu)?.[1]
+  const script = indexHtml.match(/<script\b[^>]*>([\s\S]*?)<\/script[^>]*>/iu)?.[1]
   expect(script).toBeDefined()
   const hash = createHash('sha256').update(script ?? '').digest('base64')
   const cspHash = `'sha256-${hash}'`

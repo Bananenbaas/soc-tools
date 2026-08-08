@@ -176,6 +176,12 @@ export const coreToolDefinitions = [
     icon: { viewBox: '0 0 24 24', paths: ['M4 6h16', 'M4 12h16', 'M4 18h16', 'M7 4v4', 'M12 10v4', 'M17 16v4', 'M18 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'] },
   },
   {
+    id: 'soc-tools.mitre', nameKey: 'tools.mitre.name', descriptionKey: 'tools.mitre.description',
+    category: 'threat-intel', routePath: '/tools/mitre-attack', component: () => import('./mitre/MitreTool.vue'),
+    recommendedMaxInputBytes: 1_048_576,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 5h16v14H4z', 'M8 9h8', 'M8 13h5', 'M8 17h8', 'M16 13h2'] },
+  },
+  {
     id: 'soc-tools.cmdline', nameKey: 'tools.cmdline.name', descriptionKey: 'tools.cmdline.description',
     category: 'windows', routePath: '/tools/windows-cmdline', component: () => import('./cmdline/CmdLineTool.vue'),
     recommendedMaxInputBytes: 256_000,

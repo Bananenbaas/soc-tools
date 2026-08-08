@@ -1,12 +1,15 @@
 {
   "name": "soc-tools",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "private": true,
   "description": "Client-side tools for security operations center analysts.",
   "license": "MIT",
   "author": "Bastiaan Scheffer",
   "repository": "https://github.com/Bananenbaas/soc-tools",
   "type": "module",
+  "overrides": {
+    "nanoid": "^5.1.6"
+  },
   "scripts": {
     "dev": "node scripts/generate-theme-assets.mjs && vite",
     "build": "node scripts/generate-theme-assets.mjs && vue-tsc --noEmit && vite build",

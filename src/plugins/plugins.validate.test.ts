@@ -8,8 +8,8 @@ describe('discovered plugins', () => {
     expect(validatePlugins(discoveredPlugins, packageJson.version)).toEqual([])
   })
 
-  it('discover all 24 core tools', () => {
-    expect(discoveredPlugins.flatMap((plugin) => plugin.provides.tools ?? [])).toHaveLength(24)
+  it('discover all 25 core tools', () => {
+    expect(discoveredPlugins.flatMap((plugin) => plugin.provides.tools ?? [])).toHaveLength(25)
   })
 
   it('rejects a malformed plugin before runtime registries can be built', () => {

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.8] - 2026-08-08
+
+### Added
+
+- MITRE ATT&CK Mapper: paste evidence or technique IDs (e.g. `T1059.001`) and get an informational mapping against a bundled, offline ATT&CK Enterprise catalog (v19.2) — recognised techniques with their name, tactic(s) and reference URL, unknown IDs flagged separately, optional grouping by tactic, a technique search, and CSV/Markdown export. Everything is bundled and runs in the browser; nothing connects. A scheduled workflow rebuilds the catalog from the official MITRE ATT&CK STIX bundle and opens a pull request when it changes, so the data stays current without a manual step.
+
+### Security
+
+- Upgraded the transitively-included `nanoid` to a patched release (via a bounded `^5.1.6` override) to close a high-severity denial-of-service advisory (an infinite loop in `customAlphabet`/`customRandom` when the size is 0) that entered through the Vite 8.2 bump; `npm audit --audit-level=high` is clean again. The override is bounded to the patched major so it cannot silently jump to a future breaking release.
+- Hardened the two inline-`<script>` extraction regexes (theme-asset generator and the CSP-hash e2e test) so their closing tag tolerates attributes/whitespace, resolving the CodeQL "Bad HTML filtering regexp" findings. The extracted script content — and therefore the CSP hash — is unchanged.
+
 ## [1.8.7] - 2026-08-08
 
 ### Added
