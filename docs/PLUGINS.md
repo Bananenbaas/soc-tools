@@ -46,14 +46,16 @@ export default definePlugin({
 
 Create `src/plugins/<name>/plugin.ts` with the manifest as its default export. Vite discovers these modules eagerly at build time. The core plugin is loaded first; tool IDs and routes must be unique across all plugins.
 
-`soc-tools.config.ts` can limit the resulting tool registry with `disabledTools` or `enabledTools`. Unknown IDs and invalid configuration stop the build. A plugin with no tools remains enabled for its themes or other declarations; a plugin with tools is enabled when at least one of its tools remains selected.
+`soc-tools.config.ts` can limit the resulting tool registry with `disabledTools` or `enabledTools`. Unknown IDs and invalid configuration stop the build. An enabled (active) plugin contributes each selected tool. It also contributes its themes and messages when it has at least one selected tool, or when it provides at least one theme. This keeps theme-only plugins usable while preventing a third-party plugin whose tools are all disabled and which has no themes from leaking messages. The core plugin has enabled tools by default, so its themes and messages always remain available. Licenses and capabilities use this same active-plugin set.
 
 ## Validation and CSP
 
 The build validates manifest shape, semver and core-version compatibility, API compatibility, licenses, tool IDs and routes, tool fields, icons, theme tokens, English/Dutch messages, duplicate IDs and routes, and forbidden message keys (`__proto__`, `constructor`, and `prototype`).
 
-Capabilities are declarations, not CSP generators. Each capability must have an entry in `src/plugins/capabilities.ts`. The shipped CSP is checked against the union of the capabilities of enabled plugins: every required eval-like token must be present, and no additional eval-like token is permitted.
+Capabilities are declarations, not CSP generators. Each capability must have an entry in `src/plugins/capabilities.ts`. The shipped CSP is checked per directive against the capabilities of active plugins: every required token must be present in its declared directive, and no additional eval-like token is permitted in any directive. Unknown capability names are ignored by the guard after manifest validation has reported them.
 
 ## Constraints
 
 Plugins run client-side only. They must not use network access, `eval`, dynamic code execution, external assets, or new dependencies. Keep user-facing strings in both English and Dutch message trees. Do not change existing tool IDs or routes. The application is designed for local processing and does not provide authorization to handle sensitive data.
+
+The per-route error boundary covers tool render/setup failures and rejected lazy imports. Errors from a tool's own event handlers, timers, or workers are outside that boundary and remain the tool author's responsibility.

@@ -42,23 +42,27 @@ for (const id of configuredIds) {
 const disabledTools = new Set(pluginConfig.disabledTools ?? [])
 const enabledTools = pluginConfig.enabledTools ? new Set(pluginConfig.enabledTools) : undefined
 
-function pluginIsEnabled(plugin: PluginManifest): boolean {
+export function pluginIsActive(
+  plugin: PluginManifest,
+  disabledTools: ReadonlySet<string> = new Set(),
+  enabledTools?: ReadonlySet<string>,
+): boolean {
   const tools = plugin.provides.tools ?? []
-  if (tools.length === 0) return true
-  return tools.some((tool) => !disabledTools.has(tool.id) && (!enabledTools || enabledTools.has(tool.id)))
+  const hasEnabledTool = tools.some((tool) => !disabledTools.has(tool.id) && (!enabledTools || enabledTools.has(tool.id)))
+  return hasEnabledTool || (plugin.provides.themes?.length ?? 0) > 0
 }
 
-export const enabledPlugins = discoveredPlugins.filter(pluginIsEnabled)
+export const enabledPlugins = discoveredPlugins.filter((plugin) => pluginIsActive(plugin, disabledTools, enabledTools))
 export const requiredPluginCapabilityCspTokens = requiredCapabilityCspTokens(enabledPlugins)
 
 export const toolRegistry: readonly ToolDefinition[] = allTools.filter((tool) =>
   !disabledTools.has(tool.id) && (!enabledTools || enabledTools.has(tool.id)),
 )
 
-export const themeRegistry: readonly ThemeDefinition[] = discoveredPlugins.flatMap((plugin) => plugin.provides.themes ?? [])
+export const themeRegistry: readonly ThemeDefinition[] = enabledPlugins.flatMap((plugin) => plugin.provides.themes ?? [])
 
 const mergedPluginMessages = { en: createMessageTree(), nl: createMessageTree() }
-for (const plugin of discoveredPlugins) {
+for (const plugin of enabledPlugins) {
   mergeMessageTrees(mergedPluginMessages.en, plugin.messages.en)
   mergeMessageTrees(mergedPluginMessages.nl, plugin.messages.nl)
 }

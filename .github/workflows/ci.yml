@@ -20,6 +20,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: node scripts/generate-theme-assets.mjs
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run test
@@ -37,6 +38,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: node scripts/generate-theme-assets.mjs
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

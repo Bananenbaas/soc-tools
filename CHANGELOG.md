@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.5] - 2026-08-07
+
+### Changed
+
+- Plugin themes and messages are now contributed only by active plugins (a plugin with at least one enabled tool, or that provides a theme), consistent with how capabilities and licenses are handled, so disabling a plugin's tools no longer leaves its themes or text in the app. Default behaviour (nothing disabled) is unchanged; the model is documented in the plugin authoring guide.
+- The capability→CSP guard now validates required directives per directive (not only `script-src`), asserting each capability's required tokens are present and no unjustified eval-like tokens exist.
+
+### Fixed
+
+- The theme CSS is generated in CI right after install, before typecheck/test/build, so a clean checkout no longer depends on a prior local build. The Vercel CSP example in the README is now generated from the same source as the shipped headers, so its inline-script hash can no longer drift; a test asserts every deployment policy and example carries the current hash.
+- Added error-boundary tests and an explicit async load/failure policy for tool routes so a failing tool (including a rejected lazy import) stays contained; documented that errors from a tool's own event handlers, timers, or workers remain that tool's responsibility.
+
 ## [1.8.4] - 2026-08-07
 
 ### Security

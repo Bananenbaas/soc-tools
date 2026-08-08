@@ -27,7 +27,7 @@ try {
   const script = updatedIndex.match(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/iu)?.[1]
   if (!script) throw new Error('Theme bootstrap script was not found')
   const hash = createHash('sha256').update(script).digest('base64')
-  for (const relativePath of ['public/_headers', 'deploy/nginx-headers.conf']) {
+  for (const relativePath of ['public/_headers', 'deploy/nginx-headers.conf', 'README.md']) {
     const path = resolve(root, relativePath)
     const policy = await readFile(path, 'utf8')
     const updatedPolicy = policy.replace(/'sha256-[^']+'/u, `'sha256-${hash}'`)

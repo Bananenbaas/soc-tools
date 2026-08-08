@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import packageJson from '../../package.json'
-import { discoveredPlugins } from '.'
+import { discoveredPlugins, pluginIsActive, pluginMessages, themeRegistry } from '.'
 import { hasPath, validatePlugins } from './validate'
 
 describe('discovered plugins', () => {
@@ -61,6 +61,22 @@ describe('discovered plugins', () => {
       messages: { en: {}, nl: {} }, capabilities: ['wasm'] as const,
     }
     expect(validatePlugins([valid], packageJson.version)).toEqual([])
+  })
+
+  it('keeps core contributions active while filtering an all-disabled tool-only plugin', () => {
+    const thirdParty = {
+      ...discoveredPlugins[0],
+      id: 'fixture.messages-only',
+      provides: { tools: [discoveredPlugins[0].provides.tools?.[0]], themes: [] },
+    }
+    const disabled = new Set([discoveredPlugins[0].provides.tools?.[0]?.id ?? ''])
+    const activePlugins = [discoveredPlugins[0], thirdParty].filter((plugin) => pluginIsActive(plugin as never, disabled))
+    expect(activePlugins).not.toContain(thirdParty)
+    expect(thirdParty.provides.themes).toHaveLength(0)
+    expect(pluginIsActive(thirdParty as never, disabled)).toBe(false)
+    expect(pluginIsActive(discoveredPlugins[0], new Set())).toBe(true)
+    expect(hasPath(pluginMessages.en, 'themes.terminal')).toBe(true)
+    expect(themeRegistry.length).toBeGreaterThan(0)
   })
 
   it('uses declared tool keys and rejects manifest collisions and unsafe declarations', () => {
