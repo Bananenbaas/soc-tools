@@ -1,6 +1,6 @@
 {
   "name": "soc-tools",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "private": true,
   "description": "Client-side tools for security operations center analysts.",
   "license": "MIT",
@@ -31,13 +31,13 @@
     "@vitejs/plugin-vue": "^6.0.0",
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "happy-dom": "^20.11.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.65.0",
-    "vite": "8.1.5",
+    "vite": "8.2.0",
     "vitest": "4.1.10",
-    "vue-tsc": "^3.0.0"
+    "vue-tsc": "^3.3.9"
   }
 }

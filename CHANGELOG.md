@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.6] - 2026-08-08
+
+### Fixed
+
+- The Docker image build no longer fails: the theme-asset generator now skips any deployment CSP file (README, `_headers`, nginx snippet) that is absent from the build context instead of erroring, so `npm run build` works inside the container while the full repo still keeps all CSP hashes in sync. (The 1.8.5 image failed to publish because of this; 1.8.6 restores it.)
+
+### Changed
+
+- Dependency updates: Vite 8.1.5 → 8.2.0, vue-tsc 3.3.8 → 3.3.9, globals 17.8.0 → 17.9.0, and the pinned `docker/login-action`, `docker/setup-buildx-action`, `docker/build-push-action`, and `docker/metadata-action` CI actions bumped to their latest releases.
+
 ## [1.8.5] - 2026-08-07
 
 ### Changed

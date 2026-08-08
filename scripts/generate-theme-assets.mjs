@@ -29,10 +29,21 @@ try {
   const hash = createHash('sha256').update(script).digest('base64')
   for (const relativePath of ['public/_headers', 'deploy/nginx-headers.conf', 'README.md']) {
     const path = resolve(root, relativePath)
-    const policy = await readFile(path, 'utf8')
+    let policy
+    try {
+      policy = await readFile(path, 'utf8')
+    } catch (error) {
+      if (error?.code === 'ENOENT') continue
+      throw error
+    }
     const updatedPolicy = policy.replace(/'sha256-[^']+'/u, `'sha256-${hash}'`)
     if (!policy.match(/'sha256-[^']+'/u)) throw new Error(`CSP hash was not found in ${relativePath}`)
-    await writeFile(path, updatedPolicy)
+    try {
+      await writeFile(path, updatedPolicy)
+    } catch (error) {
+      if (error?.code === 'ENOENT') continue
+      throw error
+    }
   }
 } finally {
   await server.close()
