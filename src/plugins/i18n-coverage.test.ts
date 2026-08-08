@@ -27,6 +27,7 @@ const dynamicKeyInventory: Record<string, readonly string[]> = {
   'tools.querywizard.presets.': ['user.name', 'user.help', 'host.name', 'host.help', 'ip.name', 'ip.help', 'hash.name', 'hash.help', 'blank.name', 'blank.help'],
   'tools.querywizard.dialectNotes.': ['splunk', 'kusto', 'elastic-kql', 'elastic-eql', 'lucene', 'grep'],
   'tools.querywizard.preview.emptyNotes.': ['splunk', 'kusto', 'elastic-kql', 'elastic-eql', 'lucene', 'grep'],
+  'tools.reference.sections.': ['connect', 'enumerate', 'siem', 'linux', 'windows'],
   'tools.strings.invalid.': ['hex', 'base64'],
   'tools.strings.': [],
   'tools.unicodeinspect.decodeKinds.': ['escapes', 'percent', 'html', 'punycode'],

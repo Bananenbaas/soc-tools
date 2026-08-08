@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.7] - 2026-08-08
+
+### Added
+
+- Command & Query Reference: a bundled, offline, wizard-style cheat-sheet for HTB CDSA study and practical HTB work. Navigate five topics — Connect (HTB VPN/SSH/RDP/WinRM), Enumerate (nmap/web/SMB), SIEM queries (Splunk SPL, Kusto KQL, Elastic KQL/Lucene patterns aligned with the Query Wizard), Linux log analysis / DFIR, and Windows/AD (key Event IDs, Sysmon, PowerShell) — or search across all of them, and copy any command. Everything is bundled and offline; nothing runs or connects, and the commands are reference patterns to adapt.
+
 ## [1.8.6] - 2026-08-08
 
 ### Fixed

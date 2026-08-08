@@ -120,6 +120,12 @@ export const coreToolDefinitions = [
     icon: { viewBox: '0 0 24 24', paths: ['M3 5h18l-7 8v5l-4 2v-7z', 'M16 16l2 2 3-4'] },
   },
   {
+    id: 'soc-tools.reference', nameKey: 'tools.reference.name', descriptionKey: 'tools.reference.description',
+    category: 'reference', routePath: '/tools/reference', component: () => import('./reference/ReferenceTool.vue'),
+    recommendedMaxInputBytes: 4_096,
+    icon: { viewBox: '0 0 24 24', paths: ['M4 5a2 2 0 0 1 2-2h6v17H6a2 2 0 0 0-2 2z', 'M20 5a2 2 0 0 0-2-2h-6v17h6a2 2 0 0 1 2 2z', 'M7 7h2', 'M15 7h2', 'M7 11h2', 'M15 11h2'] },
+  },
+  {
     id: 'soc-tools.netlogs', nameKey: 'tools.netlogs.name', descriptionKey: 'tools.netlogs.description',
     category: 'network', routePath: '/tools/network-logs', component: () => import('./netlogs/NetLogsTool.vue'),
     recommendedMaxInputBytes: 5_000_000,
