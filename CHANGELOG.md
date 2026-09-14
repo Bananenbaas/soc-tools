@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.9] - 2026-09-14
+
+### Security
+
+- Updated Vitest to 4.1.11 to close a moderate path-traversal / arbitrary-file-read advisory (GHSA-82fw-gwwq-j7x9) in the transitive `@vitest/mocker` redirect-mock handling. Test tooling only; the shipped client bundle is unaffected. Pinned to the patched 4.1.x line rather than the 5.0 major.
+
+### Changed
+
+- Dependency and CI maintenance: vue 3.5.40 -> 3.5.42, @types/node 26.1.2 -> 26.2.0, happy-dom 20.11.1 -> 20.14.5, typescript-eslint 8.65.0 -> 8.70.0, and the pinned `docker/setup-qemu-action` and `docker/setup-buildx-action` CI actions bumped to v4.3.0.
+
 ## [1.8.8] - 2026-08-08
 
 ### Added
