@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.10] - 2026-09-20
+
+### Changed
+
+- The declared dependency ranges now match the versions that are actually installed: vue `^3.5.41`, happy-dom `^20.11.2`, and typescript-eslint `^8.66.0`. The 1.8.9 release refreshed the lockfile but left these ranges pointing at older minimums, so the corresponding dependency update requests stayed open even though the code already ran on the newer versions. Installed versions are unchanged by this release.
+- Dependency update requests are now grouped: npm production dependencies, npm development dependencies, and GitHub Actions each arrive as a single weekly pull request instead of one per package.
+
 ## [1.8.9] - 2026-09-14
 
 ### Security
@@ -15,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Dependency and CI maintenance: vue 3.5.40 -> 3.5.42, @types/node 26.1.2 -> 26.2.0, happy-dom 20.11.1 -> 20.14.5, typescript-eslint 8.65.0 -> 8.70.0, and the pinned `docker/setup-qemu-action` and `docker/setup-buildx-action` CI actions bumped to v4.3.0.
+- Dependency and CI maintenance: vue 3.5.40 -> 3.5.41, @types/node 26.1.2 -> 26.2.0, happy-dom 20.11.1 -> 20.11.2, typescript-eslint 8.65.0 -> 8.66.0, and the pinned `docker/setup-qemu-action` and `docker/setup-buildx-action` CI actions bumped to v4.3.0.
 
 ## [1.8.8] - 2026-08-08
 
